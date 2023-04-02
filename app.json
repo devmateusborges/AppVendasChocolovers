@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Appvendas",
-    "slug": "Appvendas",
+    "slug": "admin",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mateus.borges2.Appvendas"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "37094943-0726-4dd5-b61a-c83909301005"
+      }
+    },
+    "owner": "mateus.borges2"
   }
 }
