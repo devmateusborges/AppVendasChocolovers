@@ -3,14 +3,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { create_UUID } from "../utils/FuncUtils";
 
-const NameStorage = "@Product:331";
+const tableProduct = "@Product:331";
 
 export const GetProduct = async (): Promise<any> => {
-  const response = await AsyncStorage.getItem(NameStorage);
+  const response = await AsyncStorage.getItem(tableProduct);
   const data = response ? JSON.parse(response) : [];
-  return data;
+  return data.reverse();
 };
-
+//==============================================
 export const CreateProductDB = async (
   name: string,
   describe: string,
@@ -31,12 +31,12 @@ export const CreateProductDB = async (
       created_at: new Date(),
       updeted_at: new Date(),
     };
-    const response = await AsyncStorage.getItem(NameStorage);
+    const response = await AsyncStorage.getItem(tableProduct);
     const previousData = response ? JSON.parse(response) : [];
 
     const data = [...previousData, NewProduct];
 
-    await AsyncStorage.setItem(NameStorage, JSON.stringify(data));
+    await AsyncStorage.setItem(tableProduct, JSON.stringify(data));
 
     return Toast.show({
       type: "success",
@@ -49,13 +49,14 @@ export const CreateProductDB = async (
     });
   }
 };
-
+//==============================================
 export const DeleteProduct = async (id: string): Promise<any> => {
   try {
-    const response = await AsyncStorage.getItem(NameStorage);
+    //============================================================================
+    const response = await AsyncStorage.getItem(tableProduct);
     const responseData = response ? JSON.parse(response) : [];
     const data = responseData.filter((item: TypeProducts) => item.id !== id);
-    await AsyncStorage.setItem(NameStorage, JSON.stringify(data));
+    await AsyncStorage.setItem(tableProduct, JSON.stringify(data));
     Toast.show({
       type: "success",
       text1: "Produto Deletado com sucesso",
@@ -67,7 +68,7 @@ export const DeleteProduct = async (id: string): Promise<any> => {
     });
   }
 };
-
+//==============================================
 export const UpdateProduct = async (
   id: string,
   name: string,
@@ -89,19 +90,19 @@ export const UpdateProduct = async (
       created_at: created_at,
       updeted_at: new Date(),
     };
-    const responseFilterCl = await AsyncStorage.getItem(NameStorage);
+    const responseFilterCl = await AsyncStorage.getItem(tableProduct);
     const responseFilter = responseFilterCl ? JSON.parse(responseFilterCl) : [];
 
     const dataFilter = responseFilter.filter(
       (item: TypeProducts) => item.id !== id
     );
 
-    await AsyncStorage.setItem(NameStorage, JSON.stringify(dataFilter));
-    const response = await AsyncStorage.getItem(NameStorage);
+    await AsyncStorage.setItem(tableProduct, JSON.stringify(dataFilter));
+    const response = await AsyncStorage.getItem(tableProduct);
     const previousData = response ? JSON.parse(response) : [];
 
     const data = [...previousData, NewProduct];
-    await AsyncStorage.setItem(NameStorage, JSON.stringify(data));
+    await AsyncStorage.setItem(tableProduct, JSON.stringify(data));
 
     Toast.show({
       type: "success",
@@ -114,9 +115,28 @@ export const UpdateProduct = async (
     });
   }
 };
-export const SettingsDeleteDB = async () => {
-  await AsyncStorage.clear();
+//==============================================
+export const GetByIdProduct = async (id?: string): Promise<TypeProducts[]> => {
+  const response = await AsyncStorage.getItem(tableProduct);
+  const responseData = response ? JSON.parse(response) : [];
+  const data = responseData.filter((item: TypeProducts) => item.id == id);
+
+  return data;
 };
-export const SettingsService = {
-  SettingsDeleteDB,
+//==============================================
+export const FilterProduct = async (filter: string): Promise<any> => {
+  const response = await AsyncStorage.getItem(tableProduct);
+  const responseData = response ? JSON.parse(response) : [];
+  const data = responseData.filter((item: TypeProducts) => item.name == filter);
+
+  return data;
+};
+//==============================================
+export const Productervice = {
+  FilterProduct,
+  GetProduct,
+  DeleteProduct,
+  CreateProductDB,
+  GetByIdProduct,
+  UpdateProduct,
 };

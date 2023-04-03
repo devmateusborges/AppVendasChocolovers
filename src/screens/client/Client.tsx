@@ -7,30 +7,32 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { RootStackParamList, TypeClient } from "../../@types/types";
 import { useFocusEffect } from "@react-navigation/native";
-import { DeleteClient, GetClient } from "../../asyncStorage/Client";
+import { DeleteClient, GetClient } from "../../service/Client";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { moneyFormat } from "../../utils/FuncUtils";
 export function Client() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeClient[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  //==============================================
   useFocusEffect(
     useCallback(() => {
       handlerGetAll();
     }, [])
   );
-
+  //==============================================
   const handlerGetAll = async () => {
     const response = await GetClient();
     setData(response);
   };
-
+  //==============================================
   const handlerDelete = async (id: string) => {
     const response = await DeleteClient(id);
     await handlerGetAll();
   };
-
+  //==============================================
   const handlerFilter = async (filter: string) => {
     if (filter !== "") {
       const filterData = data.filter((client: TypeClient) =>
@@ -49,6 +51,7 @@ export function Client() {
       setMessageSearch("");
     }
   };
+  //==============================================
   return (
     <>
       <View className="bg-[#8ccfc1]  absolute w-full h-[70vh] rounded-bl-[60vh]"></View>
@@ -111,11 +114,11 @@ export function Client() {
 
               <View className="flex flex-row justify-center items-center mt-2">
                 <Text className="bg-red-200 font-semibold text-[#949494] p-1 rounded-lg">
-                  Devendo : R${client?.owing},00
+                  Devendo : {moneyFormat(client?.owing)}
                 </Text>
 
                 <Text className="ml-5 bg-green-200 font-semibold text-[#949494] p-1 rounded-lg">
-                  Pagou : R${client?.paid},00
+                  Pagou : {moneyFormat(client?.paid)}
                 </Text>
               </View>
             </TouchableOpacity>

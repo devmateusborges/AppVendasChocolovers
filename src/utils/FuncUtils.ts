@@ -1,5 +1,5 @@
 import { TypeStorageTemp } from "../@types/types";
-
+//==============================================
 export function create_UUID() {
   var dt = new Date().getTime();
   var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
@@ -12,7 +12,7 @@ export function create_UUID() {
   );
   return uuid;
 }
-
+//==============================================
 export function compareDate(
   objeto1: TypeStorageTemp,
   objeto2: TypeStorageTemp
@@ -22,7 +22,7 @@ export function compareDate(
     Number(new Date(objeto2.deliveryDate))
   );
 }
-
+//==============================================
 export function dateFormat(date1: string) {
   const date = new Date(date1); // Cria um objeto Date com a data e hora atuais
   const day = date.getDate().toString().padStart(2, "0"); // Obtém o dia do mês (1-31) e preenche com 0 à esquerda, se necessário
@@ -33,4 +33,12 @@ export function dateFormat(date1: string) {
   const formattedDate = `${day}/${month}/${year}`;
 
   return formattedDate;
+}
+//==============================================
+export function moneyFormat(value: number) {
+  const numero = Number(value);
+  return `R$ ${numero.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`.replace(".", ".");
 }

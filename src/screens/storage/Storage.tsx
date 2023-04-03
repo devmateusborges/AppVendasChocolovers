@@ -8,23 +8,25 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList, TypeStorageTemp } from "../../@types/types";
-import { DeleteStorage, GetStorage } from "../../asyncStorage/Storage";
+import { DeleteStorage, GetStorage } from "../../service/Storage";
 import { StackNavigationProp } from "@react-navigation/stack/lib/typescript/src/types";
+import { moneyFormat } from "../../utils/FuncUtils";
 export function Storage() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeStorageTemp[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  //==============================================
   useFocusEffect(
     useCallback(() => {
       handlerGetAllStorage();
     }, [])
   );
-
+  //==============================================
   const handlerGetAllStorage = async () => {
     const response = await GetStorage();
     setData(response);
   };
-
+  //==============================================
   const handlerDelete = async (id: string, clientID: string) => {
     const response: TypeStorageTemp[] = await DeleteStorage(id, clientID);
     setData(response);
@@ -48,6 +50,7 @@ export function Storage() {
       setMessageSearch("");
     }
   };
+  //==============================================
   return (
     <>
       <View className="bg-[#d1637b] absolute w-full h-[80%] rounded-bl-[60vh]"></View>
@@ -107,7 +110,7 @@ export function Storage() {
                     </Text>
                     <View className="absolute right-4">
                       <Text className="text-[17px] font-bold text-[#4d4d4d] bg-[#7abd6d] p-2 rounded-lg">
-                        R${parseFloat(String(storage.priceProduct)) + ",00"}
+                        {moneyFormat(storage.priceProduct)}
                       </Text>
                     </View>
                   </View>
@@ -119,7 +122,7 @@ export function Storage() {
                   Quantidade: {storage.amount}
                 </Text>
                 <Text className="bg-[#ffa4a4] font-semibold text-[#ffffff] p-1 rounded-lg text-[20px]">
-                  Total : R${storage.totalPrice + ",00"}
+                  Total : {moneyFormat(storage.totalPrice)}
                 </Text>
               </View>
             </View>

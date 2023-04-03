@@ -7,7 +7,7 @@ import { Entypo } from "@expo/vector-icons";
 import { AppMenu } from "../../components/AppMenu";
 import { AppInput } from "../../components/AppInput";
 import { AppButton } from "../../components/AppButton";
-import { CreateProductDB } from "../../asyncStorage/Products";
+import { CreateProductDB } from "../../service/Products";
 
 export function CreateProduct() {
   const [name, setName] = useState("");
@@ -16,7 +16,7 @@ export function CreateProduct() {
   const [kg, setkg] = useState("");
   const [stock, setStock] = useState("");
   const [image, setImage] = useState("");
-
+  //==============================================
   const handlerCreate = async (
     name: string,
     describe: string,
@@ -27,6 +27,7 @@ export function CreateProduct() {
   ) => {
     await CreateProductDB(name, describe, price, kg, stock);
   };
+  //==============================================
   return (
     <>
       <View className="bg-[#da8ef1]   absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

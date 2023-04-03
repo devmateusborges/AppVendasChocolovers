@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, ScrollView } from "react-native";
 import { AppButton } from "../../components/AppButton";
 import { AppInput } from "../../components/AppInput";
 import { Ionicons } from "@expo/vector-icons";
 import { AppMenu } from "../../components/AppMenu";
-import { CreateClientDB } from "../../asyncStorage/Client";
-import { TypeClient } from "../../@types/types";
-import Toast from "react-native-toast-message";
+import { CreateClientDB } from "../../service/Client";
 
 export function CreateClient() {
   const [firstName, setFirstName] = useState("");
@@ -20,7 +12,7 @@ export function CreateClient() {
   const [phone, setPhone] = useState("");
   const [adress, setAdress] = useState("");
   const [email, setEmail] = useState("");
-
+  //==============================================
   const handlerCreate = async (
     firstName: string,
     surName: string,
@@ -30,7 +22,7 @@ export function CreateClient() {
   ) => {
     await CreateClientDB(firstName, surName, email, phone, address);
   };
-
+  //==============================================
   return (
     <>
       <View className="bg-[#8ccfc1] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

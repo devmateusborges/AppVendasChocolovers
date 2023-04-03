@@ -11,7 +11,7 @@ import {
   CreateProductDB,
   GetByIdProduct,
   UpdateProduct,
-} from "../../asyncStorage/Products";
+} from "../../service/Products";
 import { RouteProp } from "@react-navigation/native";
 interface ProductView {
   route: RouteProp<{ params: { id: string } }, "params">;
@@ -24,11 +24,11 @@ export function ProductUpdate({ route }: ProductView) {
   const [stock, setStock] = useState("");
   const [created, setCreated] = useState<any>();
   const [image, setImage] = useState("");
-
+  //==============================================
   useEffect(() => {
     handlerSelect(route.params.id);
   }, []);
-
+  //==============================================
   const handlerSelect = async (id: string) => {
     const response = await GetByIdProduct(id);
     setName(response[0].name);
@@ -38,7 +38,7 @@ export function ProductUpdate({ route }: ProductView) {
     setStock(String(response[0].stock));
     setCreated(response[0].created_at);
   };
-
+  //==============================================
   const handlerCreate = async (
     id: string,
     name: string,
@@ -50,6 +50,7 @@ export function ProductUpdate({ route }: ProductView) {
   ) => {
     await UpdateProduct(id, name, describe, price, kg, stock, created_at);
   };
+  //==============================================
   return (
     <>
       <View className="bg-[#da8ef1]   absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, ScrollView } from "react-native";
 import { AppButton } from "../../components/AppButton";
 import { AppInput } from "../../components/AppInput";
 import { Ionicons } from "@expo/vector-icons";
 import { AppMenu } from "../../components/AppMenu";
-import {
-  CreateClientDB,
-  GetByIdClient,
-  UpdateClient,
-} from "../../asyncStorage/Client";
-import { TypeClient } from "../../@types/types";
+import { GetByIdClient, UpdateClient } from "../../service/Client";
 import { RouteProp } from "@react-navigation/native";
 interface ClientView {
   route: RouteProp<{ params: { id: string } }, "params">;
@@ -29,10 +18,11 @@ export function ClientUpdate({ route }: ClientView) {
   const [created, setcCreated] = useState<any>();
   const [owing, setOwing] = useState(0);
   const [paid, setcPaid] = useState(0);
+  //==============================================
   useEffect(() => {
     handlerSelect(route.params.id);
   }, []);
-
+  //==============================================
   const handlerSelect = async (id: string) => {
     const response = await GetByIdClient(id);
     setFirstName(response[0].firstName);
@@ -44,7 +34,7 @@ export function ClientUpdate({ route }: ClientView) {
     setOwing(response[0].owing);
     setcPaid(response[0].paid);
   };
-
+  //==============================================
   const handlerCreate = async (
     id: string,
     firstName: string,
@@ -68,7 +58,7 @@ export function ClientUpdate({ route }: ClientView) {
       paid
     );
   };
-
+  //==============================================
   return (
     <>
       <View className="bg-[#8ccfc1] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

@@ -8,29 +8,15 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AppCardFeedBack } from "../components/AppCardFeedBack";
 import { MaterialIcons } from "@expo/vector-icons";
-import { AppUrgentDeliveries } from "../components/AppUrgentDeliveries";
-import { TypeProducts, TypeStorageTemp } from "../@types/types";
+import { TypeStorageTemp } from "../@types/types";
 import { useFocusEffect } from "@react-navigation/native";
-import { GetClient } from "../asyncStorage/Client";
-import { DeliveredStorage, GetStorage } from "../asyncStorage/Storage";
+import { GetStorage, UpdateDelyvers } from "../service/Storage";
 import { compareDate, dateFormat } from "../utils/FuncUtils";
 
 export function Home() {
   const [storages, setStorages] = useState<TypeStorageTemp[]>([]);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalOwing, setTotalOwing] = useState(0);
-
-  useFocusEffect(
-    useCallback(() => {
-      handlerGetAll();
-    }, [])
-  );
-
-  const handlerGetAll = async () => {
-    const response = await GetStorage();
-    const filter = response.sort(compareDate);
-    setStorages(filter);
-  };
   const buttonsMenu = [
     {
       name: "Clientes",
@@ -55,10 +41,86 @@ export function Home() {
       nameRouter: "settings",
     },
   ];
+  //==============================================
+  useFocusEffect(
+    useCallback(() => {
+      handlerGetAll();
+      handlerPayments();
+    }, [])
+  );
+  //==============================================
+  const handlerGetAll = async () => {
+    const response = await GetStorage();
+    const filter = response.sort(compareDate);
+    const filterActive = filter.filter(
+      (item: TypeStorageTemp) => item.active == "yes"
+    );
 
-  const handlerDelete = async (id: string, clientID: string) => {
-    const response = await DeliveredStorage(id, clientID);
-    setStorages(response);
+    setStorages(filterActive);
+  };
+  //==============================================
+
+  const handlerDelivery = async ({
+    id,
+    clientID,
+    productID,
+    firstNameClient,
+    surNameClient,
+    phoneClient,
+    nameProduct,
+    priceProduct,
+    totalPrice,
+    deliveryDate,
+    paymentDate,
+    describe,
+    status,
+    active,
+    amount,
+    created_at,
+  }: TypeStorageTemp) => {
+    const response = await UpdateDelyvers(
+      id,
+      clientID,
+      productID,
+      firstNameClient,
+      surNameClient,
+      phoneClient,
+      nameProduct,
+      priceProduct,
+      totalPrice,
+      deliveryDate,
+      paymentDate,
+      describe,
+      status,
+      "no",
+      amount,
+      created_at
+    );
+    const filter = response.sort(compareDate);
+    const filterOwings = filter.filter(
+      (item: TypeStorageTemp) => item.active == "yes"
+    );
+    setStorages(filterOwings);
+  };
+  //==============================================
+  const handlerPayments = async () => {
+    const response: TypeStorageTemp[] = await GetStorage();
+    const filterOwings: TypeStorageTemp[] = response.filter(
+      (item: TypeStorageTemp) => item.status == "owing"
+    );
+    const filterPaits: TypeStorageTemp[] = response.filter(
+      (item: TypeStorageTemp) => item.status == "pait"
+    );
+    let devendo = 0;
+    for (let i = 0; i < filterOwings.length; i++) {
+      devendo += filterOwings[i].totalPrice;
+    }
+    setTotalOwing(devendo);
+    let pagos = 0;
+    for (let i = 0; i < filterPaits.length; i++) {
+      pagos += filterPaits[i].totalPrice;
+    }
+    setTotalPaid(pagos);
   };
 
   return (
@@ -87,7 +149,7 @@ export function Home() {
                       {item.firstNameClient + " " + item.surNameClient}
                     </Text>
                     <TouchableOpacity
-                      onPress={() => handlerDelete(item.id, item.clientID)}
+                      onPress={() => handlerDelivery(item)}
                       className="flex flex-row items-center absolute right-1 bg-[#6962c4] rounded-lg  p-2"
                     >
                       <Text className="text-white font-bold">Entregue</Text>
@@ -95,13 +157,11 @@ export function Home() {
                   </View>
                   <View className="flex flex-row ">
                     <Text className="text-[15px] font-bold text-[#5a5a5a]">
-                      Produto :
+                      Produto : {item.nameProduct}
                     </Text>
-
-                    <Text>{item.nameProduct}</Text>
                   </View>
                   <View>
-                    <Text className="text-[15px] font-bold text-[#5a5a5a] text-center">
+                    <Text className="text-[15px] font-bold text-[#ff3333] text-center">
                       {dateFormat(String(item.deliveryDate))}
                     </Text>
                   </View>

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableHighlight, TouchableOpacity } from "react-native";
 import { AppMenu } from "../../components/AppMenu";
-import { SettingsDeleteDB } from "../../asyncStorage/Settings";
+import { SettingsDeleteDB } from "../../service/Settings";
 
 export function Settings() {
   return (

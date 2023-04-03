@@ -30,8 +30,9 @@ function MenuStyled({ ...rest }) {
               placeholder={rest.text}
               onChangeText={setsearch}
             />
-
-            <Ionicons name="search-circle-sharp" size={44} color="#6fbd89" />
+            <TouchableOpacity onPress={() => rest.onclick(search)}>
+              <Ionicons name="search-circle-sharp" size={44} color="#6fbd89" />
+            </TouchableOpacity>
           </>
         ) : (
           <Text className="ml-2 text-[#a3a3a3] text-[20px] font-bold">

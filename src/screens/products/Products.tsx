@@ -8,30 +8,32 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { DeleteProduct, GetProduct } from "../../asyncStorage/Products";
+import { DeleteProduct, GetProduct } from "../../service/Products";
 import { RootStackParamList, TypeProducts } from "../../@types/types";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { moneyFormat } from "../../utils/FuncUtils";
 
 export function Products() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeProducts[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  //==============================================
   useFocusEffect(
     useCallback(() => {
       handlerGetAll();
     }, [])
   );
-
+  //==============================================
   const handlerGetAll = async () => {
     const response = await GetProduct();
     setData(response);
   };
-
+  //==============================================
   const handlerDelete = async (id: string) => {
     const response = await DeleteProduct(id);
     await handlerGetAll();
   };
-
+  //==============================================
   const handlerFilter = async (filter: string) => {
     if (filter !== "") {
       const filterData = data.filter((client: TypeProducts) =>
@@ -50,6 +52,7 @@ export function Products() {
       setMessageSearch("");
     }
   };
+  //==============================================
   return (
     <>
       <View className="bg-[#da8ef1] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>
@@ -95,7 +98,7 @@ export function Products() {
                   </Text>
 
                   <Text className="text-[17px] bg-green-200 font-semibold text-[#949494] p-1 rounded-lg">
-                    Preço : R${product.price}
+                    Preço : {moneyFormat(product.price)}
                   </Text>
                 </View>
                 <View className="flex flex-row absolute right-1 mt-1">

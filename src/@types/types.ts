@@ -75,7 +75,8 @@ export type TypeStorageTemp = {
   deliveryDate: Date;
   paymentDate: Date;
   describe: string;
-  status: "devendo" | "pago";
+  status: "owing" | "pait";
+  active: "yes" | "no";
   amount: number;
   created_at: Date;
   updeted_at: Date;
@@ -85,7 +86,7 @@ export type TypeStorageTemp = {
 // Dropdown
 //=====================================
 
-export type TypeStorageTempHistocico = {
+export type TypeStorageTempHistory = {
   id: string;
   clientID: string;
   productID: string;
@@ -100,6 +101,24 @@ export type TypeStorageTempHistocico = {
   describe: string;
   status: "devendo" | "pago";
   amount: number;
+  created_at: Date;
+  updeted_at: Date;
+};
+
+//=====================================
+
+export type TypePayments = {
+  id: string;
+  clientID: string;
+  productID: string;
+  firstNameClient: string;
+  nameProduct: string;
+  priceProduct: number;
+  totalPrice: number;
+  deliveryDate: Date;
+  paymentDate: Date;
+  describe: string;
+  status: "devendo" | "pago";
   created_at: Date;
   updeted_at: Date;
 };

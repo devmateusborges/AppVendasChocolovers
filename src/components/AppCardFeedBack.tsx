@@ -2,6 +2,7 @@ import { TouchableOpacity, Text, View } from "react-native";
 import { styled } from "nativewind";
 import { Foundation } from "@expo/vector-icons";
 import React from "react";
+import { moneyFormat } from "../utils/FuncUtils";
 
 function ButtonStyled({ ...rest }) {
   return (
@@ -18,9 +19,12 @@ function ButtonStyled({ ...rest }) {
           </Text>
         </View>
         <View className="w-full flex flex-row items-center justify-center mt-2">
-          <Text className="text-[#9e9e9e]">R$</Text>
-          <Text className={`font-bold text-[35px] ${rest.color}`}>
-            {rest.money}
+          <Text
+            className={`font-bold ${
+              rest.money > 5 ? "text-[25px]" : "text-[30px]"
+            } ${rest.color}`}
+          >
+            {moneyFormat(rest.money)}
           </Text>
         </View>
         <View className="w-auto flex flex-row items-end justify-end">

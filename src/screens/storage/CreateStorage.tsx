@@ -10,11 +10,11 @@ import {
   MultipleSelectList,
   SelectList,
 } from "react-native-dropdown-select-list";
-import { TypeClient, TypeDropdown, TypeProducts } from "../../@types/types";
-import { GetClient } from "../../asyncStorage/Client";
+import { TypeClient, TypeProducts } from "../../@types/types";
+import { GetClient } from "../../service/Client";
 import { useFocusEffect } from "@react-navigation/native";
-import { GetProduct } from "../../asyncStorage/Products";
-import { CreateStorageDB } from "../../asyncStorage/Storage";
+import { GetProduct } from "../../service/Products";
+import { CreateStorageDB } from "../../service/Storage";
 
 export function CreateStorage() {
   const [selectedClient, setSelectedClient] = useState("");
@@ -27,14 +27,14 @@ export function CreateStorage() {
   const [paymentDate, setPaymentDate] = useState(new Date());
   const dataDropdownClient: any[] = [];
   const dataDropdownProduct: any[] = [];
-
+  //==============================================
   useFocusEffect(
     useCallback(() => {
       handlerGetCLient();
       handlerGetProduct();
     }, [dataDropdownClient, dataDropdownProduct])
   );
-
+  //==============================================
   const handlerGetCLient = async () => {
     const response = await GetClient();
     await response.map((client: TypeClient) => {
@@ -44,7 +44,7 @@ export function CreateStorage() {
       });
     });
   };
-
+  //==============================================
   const handlerGetProduct = async () => {
     const response = await GetProduct();
     await response.map((Product: TypeProducts) => {
@@ -54,6 +54,7 @@ export function CreateStorage() {
       });
     });
   };
+  //==============================================
   const handlerCreate = async (
     clientID: string,
     productID: string,
@@ -71,6 +72,7 @@ export function CreateStorage() {
       paymentDate
     );
   };
+  //==============================================
   return (
     <>
       <View className="bg-[#d1637b] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

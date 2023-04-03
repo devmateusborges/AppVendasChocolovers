@@ -1,16 +1,9 @@
-import { dataProducts } from "./../../assets/aquive";
-import {
-  TypeClient,
-  TypeProducts,
-  TypeStorageTemp,
-  TypeStorages,
-} from "../@types/types";
+import { TypeClient, TypeProducts, TypeStorageTemp } from "../@types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { create_UUID } from "../utils/FuncUtils";
-import { UpdateClient, UpdateClientExtern, UpdatePaidOwing } from "./Client";
+import { UpdatePaidOwing } from "./Client";
 
-const NameStorage = "@Storage:331";
 const NameStorageTemp = "@StorageTemp:331";
 const NameStorageProduct = "@Product:331";
 const NameStorageClient = "@Client:331";
@@ -21,7 +14,7 @@ export const GetStorage = async (): Promise<TypeStorageTemp[]> => {
 
   return data.reverse();
 };
-
+//==============================================
 export const CreateStorageDB = async (
   clientID: string,
   productID: string,
@@ -64,7 +57,8 @@ export const CreateStorageDB = async (
       totalPrice: totalDivida,
       describe: description,
       amount: amount,
-      status: "devendo",
+      status: "owing",
+      active: "yes",
       deliveryDate: deliveryDate,
       paymentDate: paymentDate,
       created_at: new Date(),
@@ -104,7 +98,7 @@ export const CreateStorageDB = async (
     });
   }
 };
-
+//==============================================
 export const DeleteStorage = async (
   id: string,
   clientID: string
@@ -166,77 +160,69 @@ export const DeleteStorage = async (
     });
   }
 };
-
-export const GetByIdStorage = async (id?: string): Promise<TypeStorages[]> => {
-  const response = await AsyncStorage.getItem(NameStorage);
-  const responseData = response ? JSON.parse(response) : [];
-  const data = responseData.filter((item: TypeStorages) => item.id == id);
-
-  return data;
-};
-
-export const FilterStorage = async (filter: string): Promise<any> => {
-  const response = await AsyncStorage.getItem(NameStorage);
-  const responseData = response ? JSON.parse(response) : [];
-  const data = responseData.filter((item: TypeStorages) => item.id == filter);
-
-  return data;
-};
-
-export const DeliveredStorage = async (
+//==============================================
+export const UpdateDelyvers = async (
   id: string,
-  clientID: string
+  clientID: string,
+  productID: string,
+  firstNameClient: string,
+  surNameClient: string,
+  phoneClient: string,
+  nameProduct: string,
+  priceProduct: number,
+  totalPrice: number,
+  deliveryDate: Date,
+  paymentDate: Date,
+  describe: string,
+  status: "owing" | "pait",
+  active: "yes" | "no",
+  amount: number,
+  created_at: Date
 ): Promise<any> => {
   try {
-    // pega todos os valores
-    const responseStorageOwing = await AsyncStorage.getItem(NameStorageTemp);
-    const previousStorageOwing: TypeStorageTemp[] = responseStorageOwing
-      ? JSON.parse(responseStorageOwing)
-      : [];
-    // pega todos os valores
-    const clientFilterOwing: TypeStorageTemp[] = previousStorageOwing.filter(
-      (storage: TypeStorageTemp) => storage.clientID == clientID
-    );
-    // pega todos os valores
-    const clientFilterStorage: TypeStorageTemp[] = previousStorageOwing.filter(
-      (storage: TypeStorageTemp) => storage.id == id
-    );
+    const NewProduct: TypeStorageTemp = {
+      id: id,
+      clientID: clientID,
+      productID: productID,
+      firstNameClient: firstNameClient,
+      surNameClient: surNameClient,
+      phoneClient: phoneClient,
+      nameProduct: nameProduct,
+      priceProduct: priceProduct,
+      totalPrice: totalPrice,
+      deliveryDate: deliveryDate,
+      paymentDate: paymentDate,
+      describe: describe,
+      status: status,
+      active: active,
+      amount: amount,
+      created_at: created_at,
+      updeted_at: new Date(),
+    };
+    const responseFilterCl = await AsyncStorage.getItem(NameStorageTemp);
+    const responseFilter = responseFilterCl ? JSON.parse(responseFilterCl) : [];
 
-    let sumTotal: number = 0;
-    for (let i = 0; i < clientFilterOwing.length; i++) {
-      sumTotal += clientFilterOwing[i].totalPrice;
-    }
-    // recurepa cliente e pega os dados dele
-    const responseStorageClient = await AsyncStorage.getItem(NameStorageClient);
-    const previousStorageClient: TypeClient[] = responseStorageClient
-      ? JSON.parse(responseStorageClient)
-      : [];
-
-    const clientFilterClient1: TypeClient[] = previousStorageClient.filter(
-      (storage: TypeClient) => storage.id == clientID
+    const dataFilter = responseFilter.filter(
+      (item: TypeProducts) => item.id !== id
     );
 
-    let newSub = sumTotal - clientFilterStorage[0].totalPrice;
+    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(dataFilter));
+    const response = await AsyncStorage.getItem(NameStorageTemp);
+    const previousData = response ? JSON.parse(response) : [];
 
-    await UpdatePaidOwing(clientFilterClient1, newSub, 0);
-
-    const data = previousStorageOwing.filter(
-      (item: TypeStorageTemp) => item.id !== id
-    );
+    const data = [...previousData, NewProduct];
     await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
 
-    // recuperando novo item
-    const responseStorage = await AsyncStorage.getItem(NameStorageTemp);
-    const previousStorage: TypeStorageTemp[] = responseStorage
-      ? JSON.parse(responseStorage)
+    const responseCurrent = await AsyncStorage.getItem(NameStorageTemp);
+    const previousDataCurrent = responseCurrent
+      ? JSON.parse(responseCurrent)
       : [];
 
     Toast.show({
       type: "success",
-      text1: "Parabens Pela entrega",
+      text1: "Parabens pela entrega",
     });
-
-    return previousStorage;
+    return previousDataCurrent;
   } catch (error: any) {
     Toast.show({
       type: "error",
@@ -244,11 +230,81 @@ export const DeliveredStorage = async (
     });
   }
 };
+//==============================================
+export const UpdatePayments = async (
+  id: string,
+  clientID: string,
+  productID: string,
+  firstNameClient: string,
+  surNameClient: string,
+  phoneClient: string,
+  nameProduct: string,
+  priceProduct: number,
+  totalPrice: number,
+  deliveryDate: Date,
+  paymentDate: Date,
+  describe: string,
+  status: "owing" | "pait",
+  active: "yes" | "no",
+  amount: number,
+  created_at: Date
+): Promise<any> => {
+  try {
+    const NewProduct: TypeStorageTemp = {
+      id: id,
+      clientID: clientID,
+      productID: productID,
+      firstNameClient: firstNameClient,
+      surNameClient: surNameClient,
+      phoneClient: phoneClient,
+      nameProduct: nameProduct,
+      priceProduct: priceProduct,
+      totalPrice: totalPrice,
+      deliveryDate: deliveryDate,
+      paymentDate: paymentDate,
+      describe: describe,
+      status: status,
+      active: active,
+      amount: amount,
+      created_at: created_at,
+      updeted_at: new Date(),
+    };
+    const responseFilterCl = await AsyncStorage.getItem(NameStorageTemp);
+    const responseFilter = responseFilterCl ? JSON.parse(responseFilterCl) : [];
 
-export const Storageervice = {
-  FilterStorage,
+    const dataFilter = responseFilter.filter(
+      (item: TypeProducts) => item.id !== id
+    );
+
+    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(dataFilter));
+    const response = await AsyncStorage.getItem(NameStorageTemp);
+    const previousData = response ? JSON.parse(response) : [];
+
+    const data = [...previousData, NewProduct];
+    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
+
+    const responseCurrent = await AsyncStorage.getItem(NameStorageTemp);
+    const previousDataCurrent = responseCurrent
+      ? JSON.parse(responseCurrent)
+      : [];
+
+    Toast.show({
+      type: "success",
+      text1: "Efetuado com sucesso",
+    });
+    return previousDataCurrent;
+  } catch (error: any) {
+    Toast.show({
+      type: "error",
+      text1: error.message,
+    });
+  }
+};
+//==============================================
+export const StoragService = {
   GetStorage,
   DeleteStorage,
   CreateStorageDB,
-  GetByIdStorage,
+  UpdateDelyvers,
+  UpdatePayments,
 };
