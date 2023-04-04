@@ -79,6 +79,7 @@ export type TypeStorageTemp = {
   status: "owing" | "pait";
   active: "yes" | "no";
   amount: number;
+  additionalPrice: number;
   created_at: Date;
   updeted_at: Date;
 };

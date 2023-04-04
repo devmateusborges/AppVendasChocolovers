@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { AppMenu } from "../../components/AppMenu";
 import { ScrollView, View, Text } from "react-native";
@@ -18,6 +18,11 @@ export function PaymentsPait() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeStorageTemp[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  const [search, setSearch] = useState("");
+  //==============================================
+  useEffect(() => {
+    handlerFilter(search);
+  }, [search]);
   //==============================================
   useFocusEffect(
     useCallback(() => {
@@ -62,7 +67,7 @@ export function PaymentsPait() {
           active={true}
           routerBack="home"
           routerAdvance="paymentsowings"
-          onclick={(text: string) => handlerFilter(text)}
+          setText={setSearch}
           messageError={messageSearch}
         />
         <AppCard

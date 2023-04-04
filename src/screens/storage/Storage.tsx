@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { AppCard } from "../../components/AppCard";
 import { AppMenu } from "../../components/AppMenu";
@@ -16,6 +16,11 @@ export function Storage() {
   const [data, setData] = useState<TypeStorageTemp[]>([]);
   const [active, setNoActive] = useState<"yes" | "no">("yes");
   const [messageSearch, setMessageSearch] = useState("");
+  const [search, setSearch] = useState("");
+  //==============================================
+  useEffect(() => {
+    handlerFilter(search);
+  }, [search]);
   //==============================================
   useFocusEffect(
     useCallback(() => {
@@ -77,7 +82,7 @@ export function Storage() {
           text="Vendas"
           active={true}
           routerBack="home"
-          onclick={(text: string) => handlerFilter(text)}
+          setText={setSearch}
           messageError={messageSearch}
         />
         <View className="w-[50%] flex flex-row items-center justify-center bg-[#ffff] p-2 rounded-b-lg">
@@ -156,7 +161,7 @@ export function Storage() {
                     <Text className="text-[17px] font-bold text-[#3a3a3a]">
                       {storage.nameProduct}
                     </Text>
-                    <Text>{storage.amount}X</Text>
+                    <Text className="ml-2">{storage.amount}X</Text>
                     <View className="absolute right-4">
                       <Text className="text-[17px] font-bold text-[#4d4d4d] bg-[#7abd6d] p-2 rounded-lg">
                         {moneyFormat(storage.priceProduct)}
@@ -178,7 +183,7 @@ export function Storage() {
                 )}
 
                 <Text className="bg-[#ffa4a4] font-semibold text-[#ffffff] p-1 rounded-lg text-[20px]">
-                  Total : {moneyFormat(storage.totalPrice)}
+                  Total : {moneyFormat(storage.additionalPrice)}
                 </Text>
               </View>
             </View>

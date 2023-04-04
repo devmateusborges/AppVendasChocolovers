@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { AppMenu } from "../../components/AppMenu";
 import { View, Text, TouchableOpacity, Image } from "react-native";
@@ -17,6 +17,11 @@ export function Products() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeProducts[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  const [search, setSearch] = useState("");
+  //==============================================
+  useEffect(() => {
+    handlerFilter(search);
+  }, [search]);
   //==============================================
   useFocusEffect(
     useCallback(() => {
@@ -62,7 +67,7 @@ export function Products() {
           active={true}
           routerBack="home"
           routerAdvance="createproduct"
-          onclick={(text: string) => handlerFilter(text)}
+          setText={setSearch}
           messageError={messageSearch}
         />
         <AppCard
@@ -91,7 +96,7 @@ export function Products() {
                 )}
                 <View className="w-60 flex flex-col my-2">
                   <Text className="text-[17px] text-justify font-bold text-[#949494]">
-                    {product.name.substring(0, 15)}
+                    {product.name.substring(0, 20)}
                   </Text>
                   <Text className="text-justify font-semibold text-[#949494]">
                     {product.describe}

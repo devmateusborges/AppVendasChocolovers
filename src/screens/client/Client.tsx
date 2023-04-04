@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { AppCard } from "../../components/AppCard";
 import { AppMenu } from "../../components/AppMenu";
@@ -21,8 +21,11 @@ export function Client() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeClient[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
-  const [owingTotalClient, setOwingTotalClient] = useState(0);
-  const [paitTotalClient, setPaitTotalClient] = useState(0);
+  const [search, setSearch] = useState("");
+  //==============================================
+  useEffect(() => {
+    handlerFilter(search);
+  }, [search]);
   //==============================================
   useFocusEffect(
     useCallback(() => {
@@ -59,37 +62,7 @@ export function Client() {
     }
   };
   //==============================================
-  const handlerPaymentsOwing = async (
-    type: "owing" | "pait",
-    idClient: string
-  ) => {
-    const response: TypeStorageTemp[] = await GetStorage();
 
-    const filterClient = response.filter(
-      (item: TypeStorageTemp) => item.id == idClient
-    );
-
-    if (type == "owing") {
-      let Pait = 0;
-      const filterPait = filterClient.filter(
-        (item: TypeStorageTemp) => item.status == "pait"
-      );
-      for (let i = 0; i < filterPait.length; i++) {
-        Pait += filterPait[i].totalPrice;
-      }
-      setOwingTotalClient(Pait);
-    } else if (type == "pait") {
-      let Owing = 0;
-      const filterOwing = filterClient.filter(
-        (item: TypeStorageTemp) => item.status == "owing"
-      );
-      for (let i = 0; i < filterOwing.length; i++) {
-        Owing += filterOwing[i].totalPrice;
-      }
-      setPaitTotalClient(Owing);
-      return Owing;
-    }
-  };
   //==============================================
   return (
     <>
@@ -100,7 +73,7 @@ export function Client() {
           text="Clientes"
           active={true}
           routerBack="home"
-          onclick={(text: string) => handlerFilter(text)}
+          setText={setSearch}
           messageError={messageSearch}
         />
 

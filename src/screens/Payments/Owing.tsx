@@ -1,15 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { AppMenu } from "../../components/AppMenu";
 import { View, Text, ScrollView } from "react-native";
 import { AppCard } from "../../components/AppCard";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { GetProduct } from "../../service/Products";
-import {
-  RootStackParamList,
-  TypeProducts,
-  TypeStorageTemp,
-} from "../../@types/types";
+
+import { RootStackParamList, TypeStorageTemp } from "../../@types/types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { dateFormat, moneyFormat } from "../../utils/FuncUtils";
 import { FontAwesome } from "@expo/vector-icons";
@@ -18,6 +14,11 @@ export function PaymentsOwing() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeStorageTemp[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  const [search, setSearch] = useState("");
+  //==============================================
+  useEffect(() => {
+    handlerFilter(search);
+  }, [search]);
   //==============================================
   useFocusEffect(
     useCallback(() => {
@@ -62,7 +63,7 @@ export function PaymentsOwing() {
           active={true}
           routerBack="home"
           routerAdvance="paymentsowings"
-          onclick={(text: string) => handlerFilter(text)}
+          setText={setSearch}
           messageError={messageSearch}
         />
         <AppCard
@@ -80,15 +81,18 @@ export function PaymentsOwing() {
                       {item.firstNameClient}
                     </Text>
                     <Text className="text-[#585858] w-[30%] text-[15px] font-bold mx-5">
-                      {item.nameProduct}
+                      {dateFormat(String(item.paymentDate))}
                     </Text>
                     <Text className="bg-[#f14d4d] p-2 text-white font-bold rounded-lg">
                       {moneyFormat(item.totalPrice)}
                     </Text>
                   </View>
                   <View className="w-full flex flex-row items-center justify-center">
+                    <Text className="text-[#585858] font-bold mr-1">
+                      {item.amount}X
+                    </Text>
                     <Text className="text-[#585858] font-bold">
-                      {dateFormat(String(item.paymentDate))}
+                      {item.nameProduct}
                     </Text>
                   </View>
                 </View>

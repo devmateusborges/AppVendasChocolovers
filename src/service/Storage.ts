@@ -20,7 +20,8 @@ export const CreateStorageDB = async (
   amount: number,
   description: string,
   deliveryDate: Date,
-  paymentDate: Date
+  paymentDate: Date,
+  additionalPrice: number
 ) => {
   try {
     // Pegando dados do client
@@ -59,6 +60,7 @@ export const CreateStorageDB = async (
       status: "owing",
       active: "yes",
       deliveryDate: deliveryDate,
+      additionalPrice: totalDivida + additionalPrice,
       paymentDate: paymentDate,
       created_at: new Date(),
       updeted_at: new Date(),
@@ -141,7 +143,8 @@ export const UpdateDelyvers = async (
   status: "owing" | "pait",
   active: "yes" | "no",
   amount: number,
-  created_at: Date
+  created_at: Date,
+  additionalPrice: number
 ): Promise<any> => {
   try {
     const NewProduct: TypeStorageTemp = {
@@ -160,6 +163,7 @@ export const UpdateDelyvers = async (
       status: status,
       active: active,
       amount: amount,
+      additionalPrice: additionalPrice,
       created_at: created_at,
       updeted_at: new Date(),
     };
@@ -211,7 +215,8 @@ export const UpdatePayments = async (
   status: "owing" | "pait",
   active: "yes" | "no",
   amount: number,
-  created_at: Date
+  created_at: Date,
+  additionalPrice: number
 ): Promise<any> => {
   try {
     const NewProduct: TypeStorageTemp = {
@@ -227,6 +232,7 @@ export const UpdatePayments = async (
       deliveryDate: deliveryDate,
       paymentDate: paymentDate,
       describe: describe,
+      additionalPrice: additionalPrice,
       status: status,
       active: active,
       amount: amount,

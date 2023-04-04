@@ -15,6 +15,7 @@ import { GetClient } from "../../service/Client";
 import { useFocusEffect } from "@react-navigation/native";
 import { GetProduct } from "../../service/Products";
 import { CreateStorageDB } from "../../service/Storage";
+import { moneyFormat } from "../../utils/FuncUtils";
 
 export function CreateStorage() {
   const [selectedClient, setSelectedClient] = useState("");
@@ -25,6 +26,7 @@ export function CreateStorage() {
   const [description, setDescription] = useState("sem descrição");
   const [deliveryDate, setDeliveryDate] = useState(new Date());
   const [paymentDate, setPaymentDate] = useState(new Date());
+  const [additionalPrice, setAdditionalPrice] = useState("0");
   const dataDropdownClient: any[] = [];
   const dataDropdownProduct: any[] = [];
   //==============================================
@@ -50,7 +52,12 @@ export function CreateStorage() {
     await response.map((Product: TypeProducts) => {
       return dataDropdownProduct.push({
         key: Product.id,
-        value: Product.name,
+        value:
+          Product.name +
+          " - " +
+          moneyFormat(Product.price) +
+          " - " +
+          Product.describe.substring(0, 15),
       });
     });
   };
@@ -61,7 +68,8 @@ export function CreateStorage() {
     amount: number,
     description: string,
     deliveryDate: Date,
-    paymentDate: Date
+    paymentDate: Date,
+    additionalPrice: number
   ) => {
     await CreateStorageDB(
       clientID,
@@ -69,7 +77,8 @@ export function CreateStorage() {
       amount,
       description,
       deliveryDate,
-      paymentDate
+      paymentDate,
+      additionalPrice
     );
   };
   //==============================================
@@ -81,7 +90,7 @@ export function CreateStorage() {
         <AppMenu text="Novo Pedido" routerBack="storages" />
 
         <View className="w-full flex flex-col bg-white h-full mt-10 rounded-xl p-2 item-center ">
-          <View className="w-[70%]flex flex-col items-center ">
+          <View className="w-[100%] h-[85%] flex flex-col items-center  p-2">
             <ScrollView className="w-full">
               <Text className="mt-4 text-[#969595] font-bold">Cliente</Text>
               <TouchableOpacity onPress={() => null}>
@@ -124,6 +133,14 @@ export function CreateStorage() {
                 onChangeText={setAmount}
                 keyboardType="numeric"
                 value={amount}
+              />
+              <AppInput
+                placeholder="EX: R$: 5"
+                className="h-[7vh] rounded-lg"
+                label={"Preço adicional"}
+                onChangeText={setAdditionalPrice}
+                keyboardType="numeric"
+                value={additionalPrice}
               />
               <AppInput
                 placeholder="EX: chocolate preto"
@@ -191,7 +208,8 @@ export function CreateStorage() {
                   Number(amount),
                   description,
                   deliveryDate,
-                  paymentDate
+                  paymentDate,
+                  Number(additionalPrice)
                 )
               }
               className="bg-green-500 w-[50%] mt-3 "

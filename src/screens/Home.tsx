@@ -77,6 +77,7 @@ export function Home() {
     active,
     amount,
     created_at,
+    additionalPrice,
   }: TypeStorageTemp) => {
     const response = await UpdateDelyvers(
       id,
@@ -94,7 +95,8 @@ export function Home() {
       status,
       "no",
       amount,
-      created_at
+      created_at,
+      additionalPrice
     );
     const filter = response.sort(compareDate);
     const filterOwings = filter.filter(
@@ -148,6 +150,7 @@ export function Home() {
                     <Text className="text-[18px] font-bold text-[#5a5a5a]">
                       {item.firstNameClient + " " + item.surNameClient}
                     </Text>
+
                     <TouchableOpacity
                       onPress={() => handlerDelivery(item)}
                       className="flex flex-row items-center absolute right-1 bg-[#6962c4] rounded-lg  p-2"
@@ -155,12 +158,15 @@ export function Home() {
                       <Text className="text-white font-bold">Entregue</Text>
                     </TouchableOpacity>
                   </View>
-                  <View className="flex flex-row ">
-                    <Text className="text-[15px] font-bold text-[#5a5a5a]">
-                      Produto : {item.nameProduct}
+                  <View className="flex flex-row items-center mb-1">
+                    <Text className="text-[16px] font-bold text-[#5a5a5a]">
+                      {item.nameProduct}
+                    </Text>
+                    <Text className="text-[16px] ml-2 font-bold text-[#5a5a5a]">
+                      {item.amount}X
                     </Text>
                   </View>
-                  <View>
+                  <View className="w-full flex flex-row justify-end">
                     <Text className="text-[15px] font-bold text-[#ff3333] text-center">
                       {dateFormat(String(item.deliveryDate))}
                     </Text>
