@@ -21,8 +21,17 @@ export function CreateClient() {
     address: string
   ) => {
     await CreateClientDB(firstName, surName, email, phone, address);
+
+    handlerClearInput();
   };
   //==============================================
+  const handlerClearInput = () => {
+    setFirstName("");
+    setSurName("");
+    setPhone("");
+    setAdress("");
+    setEmail("");
+  };
   return (
     <>
       <View className="bg-[#8ccfc1] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

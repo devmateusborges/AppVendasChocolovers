@@ -5,17 +5,24 @@ import { AppMenu } from "../../components/AppMenu";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { RootStackParamList, TypeClient } from "../../@types/types";
+import {
+  RootStackParamList,
+  TypeClient,
+  TypeStorageTemp,
+} from "../../@types/types";
 import { useFocusEffect } from "@react-navigation/native";
 import { DeleteClient, GetClient } from "../../service/Client";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { moneyFormat } from "../../utils/FuncUtils";
+import { GetStorage } from "../../service/Storage";
 export function Client() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeClient[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
+  const [owingTotalClient, setOwingTotalClient] = useState(0);
+  const [paitTotalClient, setPaitTotalClient] = useState(0);
   //==============================================
   useFocusEffect(
     useCallback(() => {
@@ -49,6 +56,38 @@ export function Client() {
       const response = await GetClient();
       setData(response);
       setMessageSearch("");
+    }
+  };
+  //==============================================
+  const handlerPaymentsOwing = async (
+    type: "owing" | "pait",
+    idClient: string
+  ) => {
+    const response: TypeStorageTemp[] = await GetStorage();
+
+    const filterClient = response.filter(
+      (item: TypeStorageTemp) => item.id == idClient
+    );
+
+    if (type == "owing") {
+      let Pait = 0;
+      const filterPait = filterClient.filter(
+        (item: TypeStorageTemp) => item.status == "pait"
+      );
+      for (let i = 0; i < filterPait.length; i++) {
+        Pait += filterPait[i].totalPrice;
+      }
+      setOwingTotalClient(Pait);
+    } else if (type == "pait") {
+      let Owing = 0;
+      const filterOwing = filterClient.filter(
+        (item: TypeStorageTemp) => item.status == "owing"
+      );
+      for (let i = 0; i < filterOwing.length; i++) {
+        Owing += filterOwing[i].totalPrice;
+      }
+      setPaitTotalClient(Owing);
+      return Owing;
     }
   };
   //==============================================
@@ -109,16 +148,6 @@ export function Client() {
                 </Text>
                 <Text className="font-semibold text-[#949494]">
                   Email : {client?.email.substring(0, 30)}
-                </Text>
-              </View>
-
-              <View className="flex flex-row justify-center items-center mt-2">
-                <Text className="bg-red-200 font-semibold text-[#949494] p-1 rounded-lg">
-                  Devendo : {moneyFormat(client?.owing)}
-                </Text>
-
-                <Text className="ml-5 bg-green-200 font-semibold text-[#949494] p-1 rounded-lg">
-                  Pagou : {moneyFormat(client?.paid)}
                 </Text>
               </View>
             </TouchableOpacity>

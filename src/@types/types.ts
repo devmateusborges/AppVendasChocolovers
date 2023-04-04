@@ -15,6 +15,12 @@ export type RootStackParamList = {
   storageview: { id: string } | undefined;
   clientupdate: {} | undefined;
   productupdate: {} | undefined;
+  paymentsowing: {} | undefined;
+  paymentspait: {} | undefined;
+
+  exportdata: {} | undefined;
+  importdata: {} | undefined;
+  exemple: {} | undefined;
 };
 //=====================================
 // ROUTES TYPES ALL TABLES
@@ -26,8 +32,6 @@ export type TypeClient = {
   email: string;
   phone: string;
   address: string;
-  owing: number;
-  paid: number;
   created_at: Date;
   updeted_at?: Date;
 };
@@ -59,9 +63,6 @@ export type TypeStorages = {
   updeted_at: Date;
 };
 
-//=====================================
-// ROUTES
-//=====================================
 export type TypeStorageTemp = {
   id: string;
   clientID: string;
@@ -78,47 +79,6 @@ export type TypeStorageTemp = {
   status: "owing" | "pait";
   active: "yes" | "no";
   amount: number;
-  created_at: Date;
-  updeted_at: Date;
-};
-
-//=====================================
-// Dropdown
-//=====================================
-
-export type TypeStorageTempHistory = {
-  id: string;
-  clientID: string;
-  productID: string;
-  firstNameClient: string;
-  surNameClient: string;
-  phoneClient: string;
-  nameProduct: string;
-  priceProduct: number;
-  totalPrice: number;
-  deliveryDate: Date;
-  paymentDate: Date;
-  describe: string;
-  status: "devendo" | "pago";
-  amount: number;
-  created_at: Date;
-  updeted_at: Date;
-};
-
-//=====================================
-
-export type TypePayments = {
-  id: string;
-  clientID: string;
-  productID: string;
-  firstNameClient: string;
-  nameProduct: string;
-  priceProduct: number;
-  totalPrice: number;
-  deliveryDate: Date;
-  paymentDate: Date;
-  describe: string;
-  status: "devendo" | "pago";
   created_at: Date;
   updeted_at: Date;
 };

@@ -35,5 +35,3 @@ function AppUrgentDeliverie({ ...rest }) {
 }
 
 const AppUrgentDeliveries = styled(AppUrgentDeliverie);
-
-export { AppUrgentDeliveries };

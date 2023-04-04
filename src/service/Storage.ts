@@ -2,7 +2,6 @@ import { TypeClient, TypeProducts, TypeStorageTemp } from "../@types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { create_UUID } from "../utils/FuncUtils";
-import { UpdatePaidOwing } from "./Client";
 
 const NameStorageTemp = "@StorageTemp:331";
 const NameStorageProduct = "@Product:331";
@@ -70,23 +69,6 @@ export const CreateStorageDB = async (
     const data = [...previousStorage, NewStorage];
     await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
 
-    //Cadastrar Nova Divida No Perfil
-    const responseStorageOwing = await AsyncStorage.getItem(NameStorageTemp);
-    const previousStorageOwing = responseStorageOwing
-      ? JSON.parse(responseStorageOwing)
-      : [];
-
-    const clientFilterOwing: TypeStorageTemp[] = previousStorageOwing.filter(
-      (storage: TypeStorageTemp) => storage.clientID == clientID
-    );
-
-    let sumTotal: number = 0;
-    for (let i = 0; i < clientFilterOwing.length; i++) {
-      sumTotal += clientFilterOwing[i].totalPrice;
-    }
-
-    await UpdatePaidOwing(filterClient, sumTotal, 0);
-
     return Toast.show({
       type: "success",
       text1: "Parabens Cadastrou um novo pedido",
@@ -117,24 +99,6 @@ export const DeleteStorage = async (
     const clientFilterStorage: TypeStorageTemp[] = previousStorageOwing.filter(
       (storage: TypeStorageTemp) => storage.id == id
     );
-
-    let sumTotal: number = 0;
-    for (let i = 0; i < clientFilterOwing.length; i++) {
-      sumTotal += clientFilterOwing[i].totalPrice;
-    }
-    // recurepa cliente e pega os dados dele
-    const responseStorageClient = await AsyncStorage.getItem(NameStorageClient);
-    const previousStorageClient: TypeClient[] = responseStorageClient
-      ? JSON.parse(responseStorageClient)
-      : [];
-
-    const clientFilterClient1: TypeClient[] = previousStorageClient.filter(
-      (storage: TypeClient) => storage.id == clientID
-    );
-
-    let newSub = sumTotal - clientFilterStorage[0].totalPrice;
-
-    await UpdatePaidOwing(clientFilterClient1, newSub, 0);
 
     const data = previousStorageOwing.filter(
       (item: TypeStorageTemp) => item.id !== id

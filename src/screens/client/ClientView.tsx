@@ -23,15 +23,20 @@ export function ClientView({ route }: ClientView) {
   //==============================================
   const handlerSelectClient = async (id: string) => {
     const response = await GetByIdClient(id);
-    const filterClient = response.filter(
-      (Client: TypeClient) => Client.id == id
+    const responseStorage = await GetStorage();
+
+    const filterStorage = responseStorage.filter(
+      (item: TypeStorageTemp) => item.clientID == id
     );
-    // calculo devendos e pagos
+
     let Owings = 0;
     let Pait = 0;
-    for (let i = 0; i < filterClient.length; i++) {
-      Owings += filterClient[i].owing;
-      Pait += filterClient[i].paid;
+    for (let i = 0; i < filterStorage.length; i++) {
+      if (filterStorage[i].status == "owing") {
+        Owings += filterStorage[i].totalPrice;
+      } else if (filterStorage[i].status == "pait") {
+        Pait += filterStorage[i].totalPrice;
+      }
     }
     setOwing(Owings);
     setPait(Pait);
@@ -84,19 +89,21 @@ export function ClientView({ route }: ClientView) {
       created_at
     );
 
-    const filterPatments = response.filter(
-      (item: TypeStorageTemp) => item.status == "pait"
+    const filterStorage = response.filter(
+      (item: TypeStorageTemp) => item.clientID == route.params.id
     );
 
     let Owings = 0;
     let Pait = 0;
-    for (let i = 0; i < filterPatments.length; i++) {
-      Owings += filterPatments[i].owing;
-      Pait += filterPatments[i].paid;
+    for (let i = 0; i < filterStorage.length; i++) {
+      if (filterStorage[i].status == "owing") {
+        Owings += filterStorage[i].totalPrice;
+      } else if (filterStorage[i].status == "pait") {
+        Pait += filterStorage[i].totalPrice;
+      }
     }
     setOwing(Owings);
     setPait(Pait);
-
     const filterClient = response.filter(
       (item: TypeStorageTemp) => item.clientID == route.params.id
     );
@@ -140,14 +147,18 @@ export function ClientView({ route }: ClientView) {
       created_at
     );
 
-    const filterPatments = response.filter(
-      (item: TypeStorageTemp) => item.status == "owing"
+    const filterStorage = response.filter(
+      (item: TypeStorageTemp) => item.clientID == route.params.id
     );
+
     let Owings = 0;
     let Pait = 0;
-    for (let i = 0; i < filterPatments.length; i++) {
-      Owings += filterPatments[i].owing;
-      Pait += filterPatments[i].paid;
+    for (let i = 0; i < filterStorage.length; i++) {
+      if (filterStorage[i].status == "owing") {
+        Owings += filterStorage[i].totalPrice;
+      } else if (filterStorage[i].status == "pait") {
+        Pait += filterStorage[i].totalPrice;
+      }
     }
     setOwing(Owings);
     setPait(Pait);

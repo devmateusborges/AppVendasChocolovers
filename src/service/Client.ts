@@ -27,8 +27,6 @@ export const CreateClientDB = async (
       email: email,
       phone: phone,
       address: address,
-      owing: 0,
-      paid: 0,
       created_at: new Date(),
     };
     const response = await AsyncStorage.getItem(table);
@@ -83,9 +81,7 @@ export const UpdateClient = async (
   email: string,
   phone: string,
   address: string,
-  created_at: Date,
-  owing: number,
-  paid: number
+  created_at: Date
 ): Promise<any> => {
   try {
     const NewClient: TypeClient = {
@@ -96,8 +92,6 @@ export const UpdateClient = async (
       phone: phone,
       address: address,
       created_at: created_at,
-      owing: owing,
-      paid: paid,
       updeted_at: new Date(),
     };
     const responseFilterCl = await AsyncStorage.getItem(table);
@@ -125,70 +119,7 @@ export const UpdateClient = async (
     });
   }
 };
-//==============================================
-//ATUALIZA OS DEVEDORES E PAGADORES
-export const UpdateClientExtern = async (
-  id: string,
-  firstName: string,
-  surName: string,
-  email: string,
-  phone: string,
-  address: string,
-  created_at: Date,
-  owing: number,
-  paid: number
-): Promise<any> => {
-  try {
-    const NewClient: TypeClient = {
-      id: id,
-      firstName: firstName,
-      surName: surName,
-      email: email,
-      phone: phone,
-      address: address,
-      created_at: created_at,
-      owing: owing,
-      paid: paid,
-      updeted_at: new Date(),
-    };
-    const responseFilterCl = await AsyncStorage.getItem(table);
-    const responseFilter = responseFilterCl ? JSON.parse(responseFilterCl) : [];
 
-    const dataFilter = responseFilter.filter(
-      (item: TypeClient) => item.id !== id
-    );
-
-    await AsyncStorage.setItem(table, JSON.stringify(dataFilter));
-    const response = await AsyncStorage.getItem(table);
-    const previousData = response ? JSON.parse(response) : [];
-
-    const data = [...previousData, NewClient];
-    await AsyncStorage.setItem(table, JSON.stringify(data));
-  } catch (error: any) {
-    Toast.show({
-      type: "error",
-      text1: error.message,
-    });
-  }
-};
-
-export const UpdatePaidOwing = async (
-  client: TypeClient[],
-  owing: number,
-  paid: number
-) => {
-  await UpdateClientExtern(
-    client[0].id,
-    client[0].firstName,
-    client[0].surName,
-    client[0].email,
-    client[0].phone,
-    client[0].address,
-    client[0].created_at,
-    owing,
-    paid
-  );
-};
 //==============================================
 export const GetByIdClient = async (id?: string): Promise<TypeClient[]> => {
   const response = await AsyncStorage.getItem(table);

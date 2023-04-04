@@ -3,14 +3,21 @@ import { styled } from "nativewind";
 import { Foundation } from "@expo/vector-icons";
 import React from "react";
 import { moneyFormat } from "../utils/FuncUtils";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../@types/types";
 
 function ButtonStyled({ ...rest }) {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   return (
     <View
       className=" flex  bg-white  ml-2  rounded-lg shadow-lg shadow-black"
       {...rest}
     >
-      <TouchableOpacity className="w-full flex flex-col items-center justify-center">
+      <TouchableOpacity
+        onPress={() => navigation.navigate(rest.nameRoute)}
+        className="w-full flex flex-col items-center justify-center"
+      >
         <View className="flex flex-row">
           {rest.icon}
 

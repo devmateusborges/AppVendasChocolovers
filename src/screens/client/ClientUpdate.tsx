@@ -16,8 +16,7 @@ export function ClientUpdate({ route }: ClientView) {
   const [adress, setAdress] = useState("");
   const [email, setEmail] = useState("");
   const [created, setcCreated] = useState<any>();
-  const [owing, setOwing] = useState(0);
-  const [paid, setcPaid] = useState(0);
+
   //==============================================
   useEffect(() => {
     handlerSelect(route.params.id);
@@ -31,8 +30,6 @@ export function ClientUpdate({ route }: ClientView) {
     setAdress(response[0].address);
     setEmail(response[0].email);
     setcCreated(response[0].created_at);
-    setOwing(response[0].owing);
-    setcPaid(response[0].paid);
   };
   //==============================================
   const handlerCreate = async (
@@ -42,9 +39,7 @@ export function ClientUpdate({ route }: ClientView) {
     email: string,
     phone: string,
     address: string,
-    created_at: Date,
-    owing: number,
-    paid: number
+    created_at: Date
   ) => {
     await UpdateClient(
       id,
@@ -53,9 +48,7 @@ export function ClientUpdate({ route }: ClientView) {
       email,
       phone,
       address,
-      created_at,
-      owing,
-      paid
+      created_at
     );
   };
   //==============================================
@@ -115,9 +108,7 @@ export function ClientUpdate({ route }: ClientView) {
                     email,
                     phone,
                     adress,
-                    created,
-                    owing,
-                    paid
+                    created
                   )
                 }
                 className="bg-green-500 w-[50%] mt-3 "

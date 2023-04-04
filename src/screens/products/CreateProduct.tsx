@@ -26,8 +26,17 @@ export function CreateProduct() {
     image?: string
   ) => {
     await CreateProductDB(name, describe, price, kg, stock);
+
+    handlerClearInput();
   };
   //==============================================
+  const handlerClearInput = () => {
+    setName("");
+    setDescribe("");
+    setPrice("");
+    setkg("");
+    setStock("");
+  };
   return (
     <>
       <View className="bg-[#da8ef1]   absolute w-full h-[70vh] rounded-bl-[60vh]"></View>

@@ -35,7 +35,7 @@ export function dateFormat(date1: string) {
   return formattedDate;
 }
 //==============================================
-export function moneyFormat(value: number) {
+export function moneyFormat(value: number | any) {
   const numero = Number(value);
   return `R$ ${numero.toLocaleString("pt-BR", {
     minimumFractionDigits: 2,

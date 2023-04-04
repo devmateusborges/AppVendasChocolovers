@@ -194,11 +194,13 @@ export function Home() {
             text="Pagos"
             color="text-green-400"
             money={totalPaid}
+            nameRoute="paymentspait"
             icon={<MaterialIcons name="groups" size={30} color="#9e9e9e" />}
           />
           <AppCardFeedBack
             className="w-[50%] h-[100%]"
             text="Receber"
+            nameRoute="paymentsowing"
             color="text-red-400"
             money={totalOwing}
             icon={<MaterialIcons name="groups" size={30} color="#9e9e9e" />}

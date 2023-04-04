@@ -14,6 +14,7 @@ import { moneyFormat } from "../../utils/FuncUtils";
 export function Storage() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeStorageTemp[]>([]);
+  const [active, setNoActive] = useState<"yes" | "no">("yes");
   const [messageSearch, setMessageSearch] = useState("");
   //==============================================
   useFocusEffect(
@@ -51,10 +52,27 @@ export function Storage() {
     }
   };
   //==============================================
+
+  const handlerFilterDelivered = async () => {
+    const response: TypeStorageTemp[] = await GetStorage();
+    const filterS = response.filter(
+      (item: TypeStorageTemp) => item.active == "no"
+    );
+    setData(filterS);
+  };
+  //==============================================
+  const handlerFilterNotDelivered = async () => {
+    const response: TypeStorageTemp[] = await GetStorage();
+    const filterS = response.filter(
+      (item: TypeStorageTemp) => item.active == "yes"
+    );
+    setData(filterS);
+  };
+  //==============================================
   return (
     <>
       <View className="bg-[#d1637b] absolute w-full h-[80%] rounded-bl-[60vh]"></View>
-      <View className="w-full h-[96%] flex flex-col p-2  absolute z-10  items-center">
+      <View className="w-full h-[90%] flex flex-col p-2  absolute z-10  items-center">
         <AppMenu
           text="Vendas"
           active={true}
@@ -62,11 +80,41 @@ export function Storage() {
           onclick={(text: string) => handlerFilter(text)}
           messageError={messageSearch}
         />
-
+        <View className="w-[50%] flex flex-row items-center justify-center bg-[#ffff] p-2 rounded-b-lg">
+          <TouchableOpacity
+            onPress={() => handlerGetAllStorage()}
+            className="mx-2 "
+          >
+            <Text className="font-bold">Todos</Text>
+          </TouchableOpacity>
+          <View className="border-r  border-l-black p-1"></View>
+          {active == "yes" ? (
+            <TouchableOpacity
+              onPress={() => {
+                handlerFilterNotDelivered(), setNoActive("no");
+              }}
+              className="mx-2"
+            >
+              <Text className="font-bold">Não Entregues</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                handlerFilterDelivered(), setNoActive("yes");
+              }}
+              className="mx-2"
+            >
+              <Text className="font-bold">Entregues</Text>
+            </TouchableOpacity>
+          )}
+        </View>
         <AppCard
           className=" bg-transparent shadow-none"
           children={data.map((storage, index) => (
-            <View key={index} className=" bg-white rounded-lg  mt-2">
+            <View
+              key={storage.id + index}
+              className=" bg-white rounded-lg  mt-2"
+            >
               <View className="w-full flex flex-row items-center relative">
                 <View className="ml-2">
                   <Text className="text-[20px] font-bold capitalize text-[#949494] ">
@@ -108,6 +156,7 @@ export function Storage() {
                     <Text className="text-[17px] font-bold text-[#3a3a3a]">
                       {storage.nameProduct}
                     </Text>
+                    <Text>{storage.amount}X</Text>
                     <View className="absolute right-4">
                       <Text className="text-[17px] font-bold text-[#4d4d4d] bg-[#7abd6d] p-2 rounded-lg">
                         {moneyFormat(storage.priceProduct)}
@@ -118,9 +167,16 @@ export function Storage() {
               </View>
 
               <View className="w-full flex flex-row items-center justify-center mb-2 ">
-                <Text className="bg-[#6ba5a2] font-semibold text-[#ffffff] p-1 mr-2 rounded-lg text-[20px]">
-                  Quantidade: {storage.amount}
-                </Text>
+                {storage.status == "owing" ? (
+                  <Text className="bg-[#f33434] font-semibold text-[#ffffff] p-1 mr-2 rounded-lg text-[20px]">
+                    Devendo
+                  </Text>
+                ) : (
+                  <Text className="bg-[#6ba5a2] font-semibold text-[#ffffff] p-1 mr-2 rounded-lg text-[20px]">
+                    Pago
+                  </Text>
+                )}
+
                 <Text className="bg-[#ffa4a4] font-semibold text-[#ffffff] p-1 rounded-lg text-[20px]">
                   Total : {moneyFormat(storage.totalPrice)}
                 </Text>
@@ -130,7 +186,7 @@ export function Storage() {
         />
         <TouchableOpacity
           onPress={() => navigation.navigate("createstorage")}
-          className=" w-full h-14 absolute z-30 top-[93%]  flex flex-grow justify-end items-end"
+          className=" h-14 absolute z-30 top-[100%]  right-5 "
         >
           <AntDesign name="pluscircle" size={50} color="#6fbd89" />
         </TouchableOpacity>

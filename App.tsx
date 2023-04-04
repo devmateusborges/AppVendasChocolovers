@@ -14,6 +14,11 @@ import Toast from "react-native-toast-message";
 import { ClientView } from "./src/screens/client/ClientView";
 import { ClientUpdate } from "./src/screens/client/ClientUpdate";
 import { ProductUpdate } from "./src/screens/products/ProductUpdate";
+import { PaymentsOwing } from "./src/screens/Payments/Owing";
+import { PaymentsPait } from "./src/screens/Payments/Pait";
+import { ExportData } from "./src/screens/settings/ExportData";
+import { ImportData } from "./src/screens/settings/ImportData";
+import { Exemple } from "./src/screens/settings/Exmple";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +54,13 @@ export default function App() {
           <Stack.Screen name="clientupdate" component={ClientUpdate} />
           {/* @ts-ignore */}
           <Stack.Screen name="productupdate" component={ProductUpdate} />
+
+          <Stack.Screen name="paymentsowing" component={PaymentsOwing} />
+          <Stack.Screen name="paymentspait" component={PaymentsPait} />
+
+          <Stack.Screen name="exportdata" component={ExportData} />
+          <Stack.Screen name="importdata" component={ImportData} />
+          <Stack.Screen name="exemple" component={Exemple} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
