@@ -9,9 +9,9 @@ import { CreateClientDB } from "../../service/Client";
 export function CreateClient() {
   const [firstName, setFirstName] = useState("");
   const [surName, setSurName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [adress, setAdress] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("(00) 00000-0000");
+  const [adress, setAdress] = useState("sem endereço");
+  const [email, setEmail] = useState("sem email");
   //==============================================
   const handlerCreate = async (
     firstName: string,

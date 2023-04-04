@@ -11,10 +11,10 @@ import { CreateProductDB } from "../../service/Products";
 
 export function CreateProduct() {
   const [name, setName] = useState("");
-  const [describe, setDescribe] = useState("");
-  const [price, setPrice] = useState("");
-  const [kg, setkg] = useState("");
-  const [stock, setStock] = useState("");
+  const [describe, setDescribe] = useState("sem descrição");
+  const [price, setPrice] = useState("0");
+  const [kg, setkg] = useState("0");
+  const [stock, setStock] = useState("0");
   const [image, setImage] = useState("");
   //==============================================
   const handlerCreate = async (
