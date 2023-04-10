@@ -2,15 +2,19 @@
 
 ##Tecnologias
 
-reactNative
-tailwind
-Async Storage
-API node
+<p>reactNative</p>
+<p>tailwind</p>
+<p>Async Storage</p>
+<p>API node</p>
 
 ## Designer
 
 Figma: https://www.figma.com/file/EzvdsTtaL4OL1I46OmCT8c/App-Venda?node-id=0-1&t=q96cFrmudIi6GfUa-0
 
+##Motivo
+<p>Fiz um aplicativo, para auxiliar a loja #chocolovers com a organização de suas vendas, tive 5 dias para desenvolver e migrar os dados da planilha para ele.
+Tecnologias utilizadas.
+</p>
 ## Imagens
 
 <img src="https://lh3.googleusercontent.com/eT5I9AUckhFguKNyX1DOmfSliKsmxY4LVM-RVcQg9BcKGm8rHA4eLDWpwI_1zra3MPqsDBXaaaQuCGenfAJCSAnihlIjioVVe3VyNkV-KaNz16yoTqQmXj7trVBHHUyGdDDEYQQ8Kj6qFzISglAWyuMMFSie9sNny5yx2jcy8d36pL2udI1TSD25-7_DaHmxokqlpJVI0dZiCTgEau-HXSmOBvEZVwcb11FVMwYtnifputXdqnWhdOVo075XnM7lOjBhuiI2pZNbiuh6LoyuE-5X9jmXAH52FhR277npys3vEKTc2WeQ38rXzdZ9bnZ_svJwQf4UBWmQqM41d_ojFEioCbDq-u7NhGBghIjnak8QsyY3eHUwVUlWyjMwxUjoXCswsba8mQFR6pm0Ggcqucc-66PZ4Bnl6rwsKm9dCu2qZvxb6DSdO-2lwiCVEZm3YXZeRlOwe1nsQpVsnbczZhh2VSS3rVnMVa6MYAc3l7LP5kL_Ue7mJMkk0u-gV0Sozod1gtlBaMLuKA4u4vHH-fSQRO_qUS60IoKWuE_-UkSQqT93-uneBKvOsvbLOPmHzefH-Jp5GKGT6wxd83vEXtBtjg6HKkTz1Nk6Ud-EyFbaxKOuqs8QruqsdtoL1UmL49li234xrklAcUkA054IGZDaYcVhxjpgFw_X1z-NwmPQ6EwD3zrtffWHAaz-JEprAAyL97X30i_xsKzEebz4x2pzKk-SIXakYzel5mi3byVhJP155K2JnFLkiIJ2ZxEPOoXYzjnqLQpjKqb19gwneWRtcghV5FSnTLP2_N12BYdf_Hzak95saPRRRt6YFD01eZyyEpSfVsNpwlTXoarZyHhl1QGReMb9NtfB8upiQE_DRG7IpYESy7rpaVWxNhgH7H6_rvfdqFyfS2CU5RhGjpHpLGhhXqNf5hOolDv26n8wKJ2xNdo96uHch_D2uTeWmsg9ZtCP63PB_CeO=w357-h635-s-no?authuser=1" alt="foto"/>
