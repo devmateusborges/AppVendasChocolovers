@@ -3,119 +3,132 @@
     {
       "id": "a3c9377b-bfc6-4025-b4d1-6171fac78cd8",
       "firstName": "Yally",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
       "address": "Francisco Alves costa",
-      "created_at": "2023-04-04T18:32:46.287Z"
+      "created_at": "2023-04-04T18:32:46.287Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "bcf3db56-f92d-46aa-9700-36d806536d84",
       "firstName": "Juliana",
       "surName": "Prima",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:33:21.081Z"
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:33:21.081Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "6f46d9ac-5cbf-46c7-b730-04dd0cf1f8de",
       "firstName": "Stefania",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:34:28.381Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:34:28.381Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "99cc2561-90b2-479d-b198-e205be2acf96",
       "firstName": "Arielly",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:34:46.581Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:34:46.581Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "7cf26cdb-6e1e-4060-998d-bfbae2e577ef",
       "firstName": "Isabella",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:35:08.078Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:35:08.078Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "a223b6b3-da65-471b-8965-6527a2777702",
       "firstName": "Dirceu",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:35:37.072Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:35:37.072Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "7753d5e9-39b1-476b-aa8d-2f9d75d0332c",
       "firstName": "Damaris",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:35:55.922Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:35:55.922Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "f527ad0c-1b74-4d7c-bb3b-bf43d14846a9",
       "firstName": "Felipe",
-      "surName": ".",
-      "email": ".",
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
       "phone": "16 991636859",
-      "address": ".",
-      "created_at": "2023-04-04T18:36:44.834Z"
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:36:44.834Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "d4920f94-e777-4664-bf0d-b63717f91197",
       "firstName": "Isabela",
       "surName": "Guerra",
-      "email": ".",
+      "email": "email@gmail.com",
       "phone": ".",
-      "address": ".",
-      "created_at": "2023-04-04T18:37:26.694Z"
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:37:26.694Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "86b7fd46-4a85-467b-96b4-a3e5353cdfdb",
       "firstName": "Stefani",
       "surName": "Prima",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:38:07.909Z"
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:38:07.909Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "9e0ec8f4-b139-4ac1-b182-50e8413ec09e",
       "firstName": "Marcela",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:38:27.821Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:38:27.821Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "569922b4-e2bb-4fd6-acdc-81c3f9b0a659",
       "firstName": "Rose",
       "surName": "Romero",
-      "email": ".",
+      "email": "email@gmail.com",
       "phone": ".",
-      "address": ".",
-      "created_at": "2023-04-04T18:38:42.746Z"
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:38:42.746Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     },
     {
       "id": "3503aae1-ea9b-4992-bb9e-3e25709be298",
       "firstName": "Carolina",
-      "surName": ".",
-      "email": ".",
-      "phone": "0",
-      "address": ".",
-      "created_at": "2023-04-04T18:39:00.025Z"
+      "surName": "sobrenome",
+      "email": "email@gmail.com",
+      "phone": "(16) 0000-0000",
+      "address": "sem endereço",
+      "created_at": "2023-04-04T18:39:00.025Z",
+      "updeted_at": "2023-04-04T20:25:43.432Z"
     }
   ],
   "produtos": [
@@ -410,7 +423,7 @@
       "active": "yes",
       "deliveryDate": "2023-04-09T19:52:00.000Z",
       "additionalPrice": 55,
-      "paymentDate": "2023-04-04T19:52:45.316Z",
+      "paymentDate": "2023-04-09T19:52:00.000Z",
       "created_at": "2023-04-04T19:57:01.195Z",
       "updeted_at": "2023-04-04T19:57:01.195Z"
     },
@@ -430,7 +443,7 @@
       "active": "yes",
       "deliveryDate": "2023-04-08T20:04:00.000Z",
       "additionalPrice": 120,
-      "paymentDate": "2023-04-04T20:04:48.058Z",
+      "paymentDate": "2023-04-08T20:04:00.000Z",
       "created_at": "2023-04-04T20:07:10.565Z",
       "updeted_at": "2023-04-04T20:07:10.565Z"
     },

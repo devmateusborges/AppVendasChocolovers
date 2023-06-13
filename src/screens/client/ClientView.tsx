@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { AppMenu } from "../../components/AppMenu";
-import { TypeClient, TypeStorageTemp } from "../../@types/types";
+import { TypeClient, TypeSales } from "../../@types/types";
 import { RouteProp } from "@react-navigation/native";
 import { GetByIdClient } from "../../service/Client";
-import { GetStorage, UpdatePayments } from "../../service/Storage";
+import { GetSales, UpdatePayments } from "../../service/Sales";
 import { dateFormat, moneyFormat } from "../../utils/FuncUtils";
 interface ClientView {
   route: RouteProp<{ params: { id: string } }, "params">;
@@ -12,30 +12,30 @@ interface ClientView {
 
 export function ClientView({ route }: ClientView) {
   const [data, setData] = useState<TypeClient[]>([]);
-  const [dataStorage, setDataStorage] = useState<TypeStorageTemp[]>([]);
+  const [dataSales, setDataSales] = useState<TypeSales[]>([]);
   const [owing, setOwing] = useState(0);
   const [pait, setPait] = useState(0);
   //==============================================
   useEffect(() => {
     handlerSelectClient(route.params.id);
-    handlerSelectStorage(route.params.id);
+    handlerSelectSales(route.params.id);
   }, []);
   //==============================================
   const handlerSelectClient = async (id: string) => {
     const response = await GetByIdClient(id);
-    const responseStorage = await GetStorage();
+    const responseSales = await GetSales();
 
-    const filterStorage = responseStorage.filter(
-      (item: TypeStorageTemp) => item.clientID == id
+    const filterSales = responseSales.filter(
+      (item: TypeSales) => item.clientID == id
     );
 
     let Owings = 0;
     let Pait = 0;
-    for (let i = 0; i < filterStorage.length; i++) {
-      if (filterStorage[i].status == "owing") {
-        Owings += filterStorage[i].totalPrice;
-      } else if (filterStorage[i].status == "pait") {
-        Pait += filterStorage[i].totalPrice;
+    for (let i = 0; i < filterSales.length; i++) {
+      if (filterSales[i].status == "owing") {
+        Owings += filterSales[i].totalPrice;
+      } else if (filterSales[i].status == "pait") {
+        Pait += filterSales[i].totalPrice;
       }
     }
     setOwing(Owings);
@@ -43,13 +43,11 @@ export function ClientView({ route }: ClientView) {
     setData(response);
   };
   //==============================================
-  const handlerSelectStorage = async (id: string) => {
-    const response = await GetStorage();
-    const filter = response.filter(
-      (storage: TypeStorageTemp) => storage.clientID == id
-    );
+  const handlerSelectSales = async (id: string) => {
+    const response = await GetSales();
+    const filter = response.filter((Sales: TypeSales) => Sales.clientID == id);
 
-    setDataStorage(filter);
+    setDataSales(filter);
   };
   //==============================================
   const handlerPaymentsPaint = async ({
@@ -69,7 +67,8 @@ export function ClientView({ route }: ClientView) {
     active,
     amount,
     created_at,
-  }: TypeStorageTemp) => {
+    additionalPrice,
+  }: TypeSales) => {
     const response = await UpdatePayments(
       id,
       clientID,
@@ -86,28 +85,29 @@ export function ClientView({ route }: ClientView) {
       "pait",
       active,
       amount,
-      created_at
+      created_at,
+      additionalPrice
     );
 
-    const filterStorage = response.filter(
-      (item: TypeStorageTemp) => item.clientID == route.params.id
+    const filterSales = response.filter(
+      (item: TypeSales) => item.clientID == route.params.id
     );
 
     let Owings = 0;
     let Pait = 0;
-    for (let i = 0; i < filterStorage.length; i++) {
-      if (filterStorage[i].status == "owing") {
-        Owings += filterStorage[i].totalPrice;
-      } else if (filterStorage[i].status == "pait") {
-        Pait += filterStorage[i].totalPrice;
+    for (let i = 0; i < filterSales.length; i++) {
+      if (filterSales[i].status == "owing") {
+        Owings += filterSales[i].totalPrice;
+      } else if (filterSales[i].status == "pait") {
+        Pait += filterSales[i].totalPrice;
       }
     }
     setOwing(Owings);
     setPait(Pait);
     const filterClient = response.filter(
-      (item: TypeStorageTemp) => item.clientID == route.params.id
+      (item: TypeSales) => item.clientID == route.params.id
     );
-    setDataStorage(filterClient);
+    setDataSales(filterClient);
   };
   //==============================================
   const handlerPaymentsOwing = async ({
@@ -127,7 +127,8 @@ export function ClientView({ route }: ClientView) {
     active,
     amount,
     created_at,
-  }: TypeStorageTemp) => {
+    additionalPrice,
+  }: TypeSales) => {
     const response = await UpdatePayments(
       id,
       clientID,
@@ -144,28 +145,29 @@ export function ClientView({ route }: ClientView) {
       "owing",
       active,
       amount,
-      created_at
+      created_at,
+      additionalPrice
     );
 
-    const filterStorage = response.filter(
-      (item: TypeStorageTemp) => item.clientID == route.params.id
+    const filterSales = response.filter(
+      (item: TypeSales) => item.clientID == route.params.id
     );
 
     let Owings = 0;
     let Pait = 0;
-    for (let i = 0; i < filterStorage.length; i++) {
-      if (filterStorage[i].status == "owing") {
-        Owings += filterStorage[i].totalPrice;
-      } else if (filterStorage[i].status == "pait") {
-        Pait += filterStorage[i].totalPrice;
+    for (let i = 0; i < filterSales.length; i++) {
+      if (filterSales[i].status == "owing") {
+        Owings += filterSales[i].additionalPrice;
+      } else if (filterSales[i].status == "pait") {
+        Pait += filterSales[i].additionalPrice;
       }
     }
     setOwing(Owings);
     setPait(Pait);
     const filterClient = response.filter(
-      (item: TypeStorageTemp) => item.clientID == route.params.id
+      (item: TypeSales) => item.clientID == route.params.id
     );
-    setDataStorage(filterClient);
+    setDataSales(filterClient);
   };
   //==============================================
   return (
@@ -181,7 +183,7 @@ export function ClientView({ route }: ClientView) {
         />
         <View className="w-full flex flex-col p-2 bg-[#ffffff98] h-[80%] mt-5 rounded-lg">
           <ScrollView>
-            {dataStorage.map((item) => (
+            {dataSales.map((item) => (
               <View key={item.id}>
                 {item.status == "owing" ? (
                   <View className="flex flex-col bg-[#ffffff] p-2 mt-2 rounded-lg">
@@ -215,7 +217,7 @@ export function ClientView({ route }: ClientView) {
                       </Text>
                       <View className="absolute right-0">
                         <Text className="  bg-[#5fe09f] p-2 text-white font-bold text-[20px] rounded-lg">
-                          {moneyFormat(item.totalPrice)}
+                          {moneyFormat(item.additionalPrice)}
                         </Text>
                       </View>
                       <Text className="text-[#aaaaaa] text-[18px] font-semibold ">

@@ -5,18 +5,13 @@ import { AppMenu } from "../../components/AppMenu";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import {
-  RootStackParamList,
-  TypeClient,
-  TypeStorageTemp,
-} from "../../@types/types";
+import { RootStackParamList, TypeClient, TypeSales } from "../../@types/types";
 import { useFocusEffect } from "@react-navigation/native";
 import { DeleteClient, GetClient } from "../../service/Client";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import { moneyFormat } from "../../utils/FuncUtils";
-import { GetStorage } from "../../service/Storage";
+
 export function Client() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [data, setData] = useState<TypeClient[]>([]);

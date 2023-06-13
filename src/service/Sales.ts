@@ -1,20 +1,24 @@
-import { TypeClient, TypeProducts, TypeStorageTemp } from "../@types/types";
+import { TypeClient, TypeProducts, TypeSales } from "../@types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { create_UUID } from "../utils/FuncUtils";
+import { createSync } from "./Sync";
+import store from "../store";
+import { Loading } from "../store/utilStore";
 
-const NameStorageTemp = "@StorageTemp:331";
-const NameStorageProduct = "@Product:331";
-const NameStorageClient = "@Client:331";
+const NameSalesTemp = "@SalesTemp:331";
+const NameSalesProduct = "@Product:331";
+const NameSalesClient = "@Client:331";
 
-export const GetStorage = async (): Promise<TypeStorageTemp[]> => {
-  const response = await AsyncStorage.getItem(NameStorageTemp);
-  const data: TypeStorageTemp[] = response ? JSON.parse(response) : [];
-
+export const GetSales = async (): Promise<TypeSales[]> => {
+  store.dispatch(Loading(true));
+  const response = await AsyncStorage.getItem(NameSalesTemp);
+  const data: TypeSales[] = response ? JSON.parse(response) : [];
+  store.dispatch(Loading(false));
   return data.reverse();
 };
 //==============================================
-export const CreateStorageDB = async (
+export const CreateSalesDB = async (
   clientID: string,
   productID: string,
   amount: number,
@@ -24,8 +28,9 @@ export const CreateStorageDB = async (
   additionalPrice: number
 ) => {
   try {
+    store.dispatch(Loading(true));
     // Pegando dados do client
-    const responseClient = await AsyncStorage.getItem(NameStorageClient);
+    const responseClient = await AsyncStorage.getItem(NameSalesClient);
     const dataClient: TypeClient[] = responseClient
       ? JSON.parse(responseClient)
       : [];
@@ -35,7 +40,7 @@ export const CreateStorageDB = async (
     );
 
     // Pegando dados do produto
-    const responseProduct = await AsyncStorage.getItem(NameStorageProduct);
+    const responseProduct = await AsyncStorage.getItem(NameSalesProduct);
     const dataProduct: TypeProducts[] = responseProduct
       ? JSON.parse(responseProduct)
       : [];
@@ -45,8 +50,9 @@ export const CreateStorageDB = async (
     );
     // tabela de exibir
     let totalDivida = Number(amount) * parseInt(String(filterProduct[0].price));
-    const NewStorage: TypeStorageTemp = {
-      id: create_UUID(),
+    const id = create_UUID();
+    const NewSales: TypeSales = {
+      id: id,
       clientID: clientID,
       productID: productID,
       firstNameClient: filterClient[0].firstName,
@@ -63,14 +69,16 @@ export const CreateStorageDB = async (
       additionalPrice: totalDivida + additionalPrice,
       paymentDate: paymentDate,
       created_at: new Date(),
-      updeted_at: new Date(),
+      updated_at: new Date(),
     };
 
-    const responseStorage = await AsyncStorage.getItem(NameStorageTemp);
-    const previousStorage = responseStorage ? JSON.parse(responseStorage) : [];
-    const data = [...previousStorage, NewStorage];
-    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
+    const responseSales = await AsyncStorage.getItem(NameSalesTemp);
+    const previousSales = responseSales ? JSON.parse(responseSales) : [];
+    const data = [...previousSales, NewSales];
+    await AsyncStorage.setItem(NameSalesTemp, JSON.stringify(data));
+    await createSync(id, "INSERT", "sales", "yes");
 
+    store.dispatch(Loading(false));
     return Toast.show({
       type: "success",
       text1: "Parabens Cadastrou um novo pedido",
@@ -83,42 +91,36 @@ export const CreateStorageDB = async (
   }
 };
 //==============================================
-export const DeleteStorage = async (
+export const DeleteSales = async (
   id: string,
   clientID: string
 ): Promise<any> => {
   try {
+    store.dispatch(Loading(true));
     // pega todos os valores
-    const responseStorageOwing = await AsyncStorage.getItem(NameStorageTemp);
-    const previousStorageOwing: TypeStorageTemp[] = responseStorageOwing
-      ? JSON.parse(responseStorageOwing)
+    const responseSalesOwing = await AsyncStorage.getItem(NameSalesTemp);
+    const previousSalesOwing: TypeSales[] = responseSalesOwing
+      ? JSON.parse(responseSalesOwing)
       : [];
-    // pega todos os valores
-    const clientFilterOwing: TypeStorageTemp[] = previousStorageOwing.filter(
-      (storage: TypeStorageTemp) => storage.clientID == clientID
-    );
-    // pega todos os valores
-    const clientFilterStorage: TypeStorageTemp[] = previousStorageOwing.filter(
-      (storage: TypeStorageTemp) => storage.id == id
-    );
 
-    const data = previousStorageOwing.filter(
-      (item: TypeStorageTemp) => item.id !== id
-    );
-    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
+    const data = previousSalesOwing.filter((item: TypeSales) => item.id !== id);
+    await AsyncStorage.setItem(NameSalesTemp, JSON.stringify(data));
 
     // recuperando novo item
-    const responseStorage = await AsyncStorage.getItem(NameStorageTemp);
-    const previousStorage: TypeStorageTemp[] = responseStorage
-      ? JSON.parse(responseStorage)
+    const responseSales = await AsyncStorage.getItem(NameSalesTemp);
+    const previousSales: TypeSales[] = responseSales
+      ? JSON.parse(responseSales)
       : [];
+    await createSync(id, "DELETE", "sales", "yes");
+
+    store.dispatch(Loading(false));
 
     Toast.show({
       type: "success",
       text1: "Pedido Deletado com sucesso",
     });
 
-    return previousStorage;
+    return previousSales;
   } catch (error: any) {
     Toast.show({
       type: "error",
@@ -147,7 +149,8 @@ export const UpdateDelyvers = async (
   additionalPrice: number
 ): Promise<any> => {
   try {
-    const NewProduct: TypeStorageTemp = {
+    store.dispatch(Loading(true));
+    const NewProduct: TypeSales = {
       id: id,
       clientID: clientID,
       productID: productID,
@@ -165,26 +168,29 @@ export const UpdateDelyvers = async (
       amount: amount,
       additionalPrice: additionalPrice,
       created_at: created_at,
-      updeted_at: new Date(),
+      updated_at: new Date(),
     };
-    const responseFilterCl = await AsyncStorage.getItem(NameStorageTemp);
+    const responseFilterCl = await AsyncStorage.getItem(NameSalesTemp);
     const responseFilter = responseFilterCl ? JSON.parse(responseFilterCl) : [];
 
     const dataFilter = responseFilter.filter(
       (item: TypeProducts) => item.id !== id
     );
 
-    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(dataFilter));
-    const response = await AsyncStorage.getItem(NameStorageTemp);
+    await AsyncStorage.setItem(NameSalesTemp, JSON.stringify(dataFilter));
+    const response = await AsyncStorage.getItem(NameSalesTemp);
     const previousData = response ? JSON.parse(response) : [];
 
     const data = [...previousData, NewProduct];
-    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
+    await AsyncStorage.setItem(NameSalesTemp, JSON.stringify(data));
 
-    const responseCurrent = await AsyncStorage.getItem(NameStorageTemp);
+    const responseCurrent = await AsyncStorage.getItem(NameSalesTemp);
     const previousDataCurrent = responseCurrent
       ? JSON.parse(responseCurrent)
       : [];
+    await createSync(id, "UPDATE", "sales", "yes");
+
+    store.dispatch(Loading(false));
 
     Toast.show({
       type: "success",
@@ -219,7 +225,8 @@ export const UpdatePayments = async (
   additionalPrice: number
 ): Promise<any> => {
   try {
-    const NewProduct: TypeStorageTemp = {
+    store.dispatch(Loading(true));
+    const NewProduct: TypeSales = {
       id: id,
       clientID: clientID,
       productID: productID,
@@ -237,26 +244,28 @@ export const UpdatePayments = async (
       active: active,
       amount: amount,
       created_at: created_at,
-      updeted_at: new Date(),
+      updated_at: new Date(),
     };
-    const responseFilterCl = await AsyncStorage.getItem(NameStorageTemp);
+    const responseFilterCl = await AsyncStorage.getItem(NameSalesTemp);
     const responseFilter = responseFilterCl ? JSON.parse(responseFilterCl) : [];
 
     const dataFilter = responseFilter.filter(
       (item: TypeProducts) => item.id !== id
     );
 
-    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(dataFilter));
-    const response = await AsyncStorage.getItem(NameStorageTemp);
+    await AsyncStorage.setItem(NameSalesTemp, JSON.stringify(dataFilter));
+    const response = await AsyncStorage.getItem(NameSalesTemp);
     const previousData = response ? JSON.parse(response) : [];
 
     const data = [...previousData, NewProduct];
-    await AsyncStorage.setItem(NameStorageTemp, JSON.stringify(data));
+    await AsyncStorage.setItem(NameSalesTemp, JSON.stringify(data));
 
-    const responseCurrent = await AsyncStorage.getItem(NameStorageTemp);
+    const responseCurrent = await AsyncStorage.getItem(NameSalesTemp);
     const previousDataCurrent = responseCurrent
       ? JSON.parse(responseCurrent)
       : [];
+    await createSync(id, "UPDATE", "sales", "yes");
+    store.dispatch(Loading(false));
 
     Toast.show({
       type: "success",
@@ -272,9 +281,9 @@ export const UpdatePayments = async (
 };
 //==============================================
 export const StoragService = {
-  GetStorage,
-  DeleteStorage,
-  CreateStorageDB,
+  GetSales,
+  DeleteSales,
+  CreateSalesDB,
   UpdateDelyvers,
   UpdatePayments,
 };

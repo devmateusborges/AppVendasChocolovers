@@ -1,14 +1,29 @@
 import React from "react";
-import { View, Text, TouchableHighlight, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { AppMenu } from "../../components/AppMenu";
-import { SettingsDeleteDB } from "../../service/Settings";
 import { AppCard } from "../../components/AppCard";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../@types/types";
 import { useNavigation } from "@react-navigation/native";
 
+import { handlerSyncTables, unsubscribe } from "../../service/Becackp";
+import { LoadingSync, internetState } from "../../store/utilStore";
+import { useDispatch, useSelector } from "react-redux";
+import store, { RootState } from "../../store";
+import { deleteTablesASync } from "../../service/settings";
+
+// To unsubscribe to these update, just use:
+
 export function Settings() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const InternetLoading = useSelector(
+    (state: RootState) => state.util.internetState
+  );
+  const dispatch = useDispatch();
+
+  const handlerAsyncAll = async () => {
+    const response1 = await handlerSyncTables();
+  };
   return (
     <>
       <View className="bg-[#AE63D1] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>
@@ -23,30 +38,19 @@ export function Settings() {
                 responsabilizamos por perdas de dados ou alteração. Atenção
                 Acione o suporte se necessário!
               </Text>
+
               <TouchableOpacity
-                onPress={() => navigation.navigate("exportdata")}
-                className="w-full bg-[#54acb8] p-5 flex items-center rounded-lg mt-5"
+                onPress={() => handlerAsyncAll()}
+                className="w-full bg-[#5493b8] p-5 flex items-center rounded-lg mt-5"
               >
-                <Text className="text-white font-bold">Exportar Dados</Text>
+                <Text className="text-white font-bold">Sincronizar dados</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("importdata")}
-                className="w-full bg-[#54b86d] p-5 flex items-center rounded-lg mt-5"
-              >
-                <Text className="text-white font-bold">Importar Dados</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("exemple")}
-                className="w-full bg-[#b85b54] p-5 flex items-center rounded-lg mt-5"
-              >
-                <Text className="text-white font-bold">Exemplos</Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity
                 className="w-full bg-[#fd0a0a] p-5 flex items-center rounded-lg mt-5"
-                onPress={() => SettingsDeleteDB()}
+                onPress={() => deleteTablesASync()}
               >
                 <Text className="text-white font-bold">Apagar Tudo</Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
           }
         />

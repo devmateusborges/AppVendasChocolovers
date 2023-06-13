@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { AppCard } from "../../components/AppCard";
-
+import { View, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import { AppMenu } from "../../components/AppMenu";
 import { AppInput } from "../../components/AppInput";
 import { AppButton } from "../../components/AppButton";

@@ -5,22 +5,22 @@ export type RootStackParamList = {
   clients: {} | undefined;
   products: {} | undefined;
   settings: {} | undefined;
-  storages: {} | undefined;
+  sales: {} | undefined;
   home: {} | undefined;
+  //-----------------
   createclient: {} | undefined;
   createproduct: {} | undefined;
-  createstorage: {} | undefined;
+  createsales: {} | undefined;
+  //-----------------
   clientview: { id: string } | undefined;
   productview: { id: string } | undefined;
-  storageview: { id: string } | undefined;
+  salesview: { id: string } | undefined;
+  //-----------------
   clientupdate: {} | undefined;
   productupdate: {} | undefined;
+  //-----------------
   paymentsowing: {} | undefined;
   paymentspait: {} | undefined;
-
-  exportdata: {} | undefined;
-  importdata: {} | undefined;
-  exemple: {} | undefined;
 };
 //=====================================
 // ROUTES TYPES ALL TABLES
@@ -33,7 +33,7 @@ export type TypeClient = {
   phone: string;
   address: string;
   created_at: Date;
-  updeted_at?: Date;
+  updated_at: Date;
 };
 
 export type TypeProducts = {
@@ -45,25 +45,10 @@ export type TypeProducts = {
   stock: number;
   image?: string;
   created_at: Date;
-  updeted_at: Date;
+  updated_at: Date;
 };
 
-export type TypeStorages = {
-  id: string;
-  clientID: string;
-  productID: string;
-  amount: number;
-  description: string;
-  priceOne: number;
-  totalPrice: number;
-  deliveryDate: Date;
-  paymentDate: Date;
-  active: false;
-  created_at: Date;
-  updeted_at: Date;
-};
-
-export type TypeStorageTemp = {
+export type TypeSales = {
   id: string;
   clientID: string;
   productID: string;
@@ -81,5 +66,15 @@ export type TypeStorageTemp = {
   amount: number;
   additionalPrice: number;
   created_at: Date;
-  updeted_at: Date;
+  updated_at: Date;
+};
+
+export type TypeSync = {
+  id: string;
+  itemID: string;
+  method: "INSERT" | "UPDATE" | "DELETE";
+  table: "client" | "product" | "sales";
+  active: "yes" | "no";
+  created_at: Date;
+  updated_at: Date;
 };

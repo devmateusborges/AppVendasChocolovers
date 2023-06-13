@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Appvendas",
+    "name": "appSales",
     "slug": "admin",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,18 +11,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mateus.borges2.appSales"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mateus.borges2.Appvendas"
+      "package": "com.mateus.borges2.appSales"
     },
     "web": {
       "favicon": "./assets/favicon.png"

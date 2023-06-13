@@ -8,15 +8,15 @@ import { GetProduct } from "../../service/Products";
 import {
   RootStackParamList,
   TypeProducts,
-  TypeStorageTemp,
+  TypeSales,
 } from "../../@types/types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { dateFormat, moneyFormat } from "../../utils/FuncUtils";
 import { FontAwesome } from "@expo/vector-icons";
-import { GetStorage } from "../../service/Storage";
+import { GetSales } from "../../service/Sales";
 export function PaymentsPait() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [data, setData] = useState<TypeStorageTemp[]>([]);
+  const [data, setData] = useState<TypeSales[]>([]);
   const [messageSearch, setMessageSearch] = useState("");
   const [search, setSearch] = useState("");
   //==============================================
@@ -31,17 +31,17 @@ export function PaymentsPait() {
   );
   //==============================================
   const handlerGetAll = async () => {
-    const responseStorage = await GetStorage();
-    const filterStorage = responseStorage.filter(
-      (item: TypeStorageTemp) => item.status == "pait"
+    const responseSales = await GetSales();
+    const filterSales = responseSales.filter(
+      (item: TypeSales) => item.status == "pait"
     );
-    setData(filterStorage);
+    setData(filterSales);
   };
 
   //==============================================
   const handlerFilter = async (filter: string) => {
     if (filter !== "") {
-      const filterData = data.filter((client: TypeStorageTemp) =>
+      const filterData = data.filter((client: TypeSales) =>
         client.firstNameClient.toLowerCase().includes(filter.toLowerCase())
       );
 
@@ -52,7 +52,7 @@ export function PaymentsPait() {
         setData(filterData);
       }
     } else {
-      const response = await GetStorage();
+      const response = await GetSales();
       setData(response);
       setMessageSearch("");
     }
@@ -74,7 +74,7 @@ export function PaymentsPait() {
           className=" bg-transparent shadow-none"
           children={
             <ScrollView>
-              {data.map((item: TypeStorageTemp, index) => (
+              {data.map((item: TypeSales, index) => (
                 <View
                   key={item.id + index}
                   className="bg-white p-2 rounded-lg mt-2"

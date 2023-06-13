@@ -1,4 +1,4 @@
-import { TypeStorageTemp } from "../@types/types";
+import { TypeSales } from "../@types/types";
 //==============================================
 export function create_UUID() {
   var dt = new Date().getTime();
@@ -13,10 +13,7 @@ export function create_UUID() {
   return uuid;
 }
 //==============================================
-export function compareDate(
-  objeto1: TypeStorageTemp,
-  objeto2: TypeStorageTemp
-) {
+export function compareDate(objeto1: TypeSales, objeto2: TypeSales) {
   return (
     Number(new Date(objeto1.deliveryDate)) -
     Number(new Date(objeto2.deliveryDate))

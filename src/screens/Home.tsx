@@ -8,13 +8,13 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AppCardFeedBack } from "../components/AppCardFeedBack";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TypeStorageTemp } from "../@types/types";
+import { TypeSales } from "../@types/types";
 import { useFocusEffect } from "@react-navigation/native";
-import { GetStorage, UpdateDelyvers } from "../service/Storage";
+import { GetSales, UpdateDelyvers } from "../service/Sales";
 import { compareDate, dateFormat } from "../utils/FuncUtils";
 
 export function Home() {
-  const [storages, setStorages] = useState<TypeStorageTemp[]>([]);
+  const [Sales, setSales] = useState<TypeSales[]>([]);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalOwing, setTotalOwing] = useState(0);
   const buttonsMenu = [
@@ -33,7 +33,7 @@ export function Home() {
     {
       name: "Vendas",
       icon: <FontAwesome5 name="store" size={19} color="#9e9e9e" />,
-      nameRouter: "storages",
+      nameRouter: "sales",
     },
     {
       name: "Configu",
@@ -50,13 +50,13 @@ export function Home() {
   );
   //==============================================
   const handlerGetAll = async () => {
-    const response = await GetStorage();
+    const response = await GetSales();
     const filter = response.sort(compareDate);
     const filterActive = filter.filter(
-      (item: TypeStorageTemp) => item.active == "yes"
+      (item: TypeSales) => item.active == "yes"
     );
 
-    setStorages(filterActive);
+    setSales(filterActive);
   };
   //==============================================
 
@@ -78,7 +78,7 @@ export function Home() {
     amount,
     created_at,
     additionalPrice,
-  }: TypeStorageTemp) => {
+  }: TypeSales) => {
     const response = await UpdateDelyvers(
       id,
       clientID,
@@ -100,27 +100,27 @@ export function Home() {
     );
     const filter = response.sort(compareDate);
     const filterOwings = filter.filter(
-      (item: TypeStorageTemp) => item.active == "yes"
+      (item: TypeSales) => item.active == "yes"
     );
-    setStorages(filterOwings);
+    setSales(filterOwings);
   };
   //==============================================
   const handlerPayments = async () => {
-    const response: TypeStorageTemp[] = await GetStorage();
-    const filterOwings: TypeStorageTemp[] = response.filter(
-      (item: TypeStorageTemp) => item.status == "owing"
+    const response: TypeSales[] = await GetSales();
+    const filterOwings: TypeSales[] = response.filter(
+      (item: TypeSales) => item.status == "owing"
     );
-    const filterPaits: TypeStorageTemp[] = response.filter(
-      (item: TypeStorageTemp) => item.status == "pait"
+    const filterPaits: TypeSales[] = response.filter(
+      (item: TypeSales) => item.status == "pait"
     );
     let devendo = 0;
     for (let i = 0; i < filterOwings.length; i++) {
-      devendo += filterOwings[i].totalPrice;
+      devendo += filterOwings[i].additionalPrice;
     }
     setTotalOwing(devendo);
     let pagos = 0;
     for (let i = 0; i < filterPaits.length; i++) {
-      pagos += filterPaits[i].totalPrice;
+      pagos += filterPaits[i].additionalPrice;
     }
     setTotalPaid(pagos);
   };
@@ -141,7 +141,7 @@ export function Home() {
           }
           children={
             <ScrollView className="w-full h-[100%]">
-              {storages.map((item, index) => (
+              {Sales.map((item, index) => (
                 <View
                   key={item.id + index}
                   className="rounded-lg p-3  flex flex-col  bg-white  h-auto justify-center mt-2"

@@ -1,4 +1,4 @@
-package com.mateus.borges2.Appvendas;
+package com.mateus.borges2.appSales;
 
 import android.os.Build;
 import android.os.Bundle;

@@ -76,11 +76,11 @@ export function Products() {
             <View key={product.id + index} className="mt-1 bg-white rounded-lg">
               <View
                 key={product.id + index}
-                className=" bg-white p-1  rounded-lg flex flex-row  relative "
+                className=" bg-white p-1  rounded-lg flex flex-row  relative items-center mr-1 "
               >
                 {product.image !== "" ? (
                   <Image
-                    className="w-16 h-16 rounded-full"
+                    className="w-16 h-16 rounded-full mr-2"
                     source={{
                       uri: product.image,
                     }}

@@ -7,13 +7,13 @@ import { EvilIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { RootStackParamList, TypeStorageTemp } from "../../@types/types";
-import { DeleteStorage, GetStorage } from "../../service/Storage";
+import { RootStackParamList, TypeSales } from "../../@types/types";
+import { DeleteSales, GetSales } from "../../service/Sales";
 import { StackNavigationProp } from "@react-navigation/stack/lib/typescript/src/types";
 import { moneyFormat } from "../../utils/FuncUtils";
-export function Storage() {
+export function Sales() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [data, setData] = useState<TypeStorageTemp[]>([]);
+  const [data, setData] = useState<TypeSales[]>([]);
   const [active, setNoActive] = useState<"yes" | "no">("yes");
   const [messageSearch, setMessageSearch] = useState("");
   const [search, setSearch] = useState("");
@@ -24,23 +24,23 @@ export function Storage() {
   //==============================================
   useFocusEffect(
     useCallback(() => {
-      handlerGetAllStorage();
+      handlerGetAllSales();
     }, [])
   );
   //==============================================
-  const handlerGetAllStorage = async () => {
-    const response = await GetStorage();
+  const handlerGetAllSales = async () => {
+    const response = await GetSales();
     setData(response);
   };
   //==============================================
   const handlerDelete = async (id: string, clientID: string) => {
-    const response: TypeStorageTemp[] = await DeleteStorage(id, clientID);
+    const response: TypeSales[] = await DeleteSales(id, clientID);
     setData(response);
   };
 
   const handlerFilter = async (filter: string) => {
     if (filter !== "") {
-      const filterData = data.filter((client: TypeStorageTemp) =>
+      const filterData = data.filter((client: TypeSales) =>
         client.firstNameClient.toLowerCase().includes(filter.toLowerCase())
       );
 
@@ -51,7 +51,7 @@ export function Storage() {
         setData(filterData);
       }
     } else {
-      const response = await GetStorage();
+      const response = await GetSales();
       setData(response);
       setMessageSearch("");
     }
@@ -59,18 +59,14 @@ export function Storage() {
   //==============================================
 
   const handlerFilterDelivered = async () => {
-    const response: TypeStorageTemp[] = await GetStorage();
-    const filterS = response.filter(
-      (item: TypeStorageTemp) => item.active == "no"
-    );
+    const response: TypeSales[] = await GetSales();
+    const filterS = response.filter((item: TypeSales) => item.active == "no");
     setData(filterS);
   };
   //==============================================
   const handlerFilterNotDelivered = async () => {
-    const response: TypeStorageTemp[] = await GetStorage();
-    const filterS = response.filter(
-      (item: TypeStorageTemp) => item.active == "yes"
-    );
+    const response: TypeSales[] = await GetSales();
+    const filterS = response.filter((item: TypeSales) => item.active == "yes");
     setData(filterS);
   };
   //==============================================
@@ -87,7 +83,7 @@ export function Storage() {
         />
         <View className="w-[50%] flex flex-row items-center justify-center bg-[#ffff] p-2 rounded-b-lg">
           <TouchableOpacity
-            onPress={() => handlerGetAllStorage()}
+            onPress={() => handlerGetAllSales()}
             className="mx-2 "
           >
             <Text className="font-bold">Todos</Text>
@@ -115,24 +111,21 @@ export function Storage() {
         </View>
         <AppCard
           className=" bg-transparent shadow-none"
-          children={data.map((storage, index) => (
-            <View
-              key={storage.id + index}
-              className=" bg-white rounded-lg  mt-2"
-            >
+          children={data.map((Sales, index) => (
+            <View key={Sales.id + index} className=" bg-white rounded-lg  mt-2">
               <View className="w-full flex flex-row items-center relative">
                 <View className="ml-2">
                   <Text className="text-[20px] font-bold capitalize text-[#949494] ">
-                    {storage.firstNameClient + " " + storage.surNameClient}
+                    {Sales.firstNameClient + " " + Sales.surNameClient}
                   </Text>
                   <Text className="font-semibold text-[#949494]">
-                    {storage.phoneClient}
+                    {Sales.phoneClient}
                   </Text>
                 </View>
                 <View className="flex flex-row absolute right-1 ">
                   <TouchableOpacity
                     className="ml-2"
-                    onPress={() => handlerDelete(storage.id, storage.clientID)}
+                    onPress={() => handlerDelete(Sales.id, Sales.clientID)}
                   >
                     <MaterialIcons name="delete" size={24} color="#d86464" />
                   </TouchableOpacity>
@@ -142,7 +135,7 @@ export function Storage() {
               <View className="w-full  items-center justify-center p-2">
                 <ScrollView>
                   <Text className="text-justify  text-[#747474] font-bold text-[15px]">
-                    {storage.describe}
+                    {Sales.describe}
                   </Text>
                 </ScrollView>
               </View>
@@ -159,12 +152,12 @@ export function Storage() {
                   <View className="w-[100%] flex flex-row items-center relative p-4 rounded-lg mt-2  bg-[#e6e7e7]">
                     <Ionicons name="md-egg-sharp" size={24} color="black" />
                     <Text className="text-[17px] font-bold text-[#3a3a3a]">
-                      {storage.nameProduct}
+                      {Sales.nameProduct}
                     </Text>
-                    <Text className="ml-2">{storage.amount}X</Text>
+                    <Text className="ml-2">{Sales.amount}X</Text>
                     <View className="absolute right-4">
                       <Text className="text-[17px] font-bold text-[#4d4d4d] bg-[#7abd6d] p-2 rounded-lg">
-                        {moneyFormat(storage.priceProduct)}
+                        {moneyFormat(Sales.priceProduct)}
                       </Text>
                     </View>
                   </View>
@@ -172,7 +165,7 @@ export function Storage() {
               </View>
 
               <View className="w-full flex flex-row items-center justify-center mb-2 ">
-                {storage.status == "owing" ? (
+                {Sales.status == "owing" ? (
                   <Text className="bg-[#f33434] font-semibold text-[#ffffff] p-1 mr-2 rounded-lg text-[20px]">
                     Devendo
                   </Text>
@@ -183,14 +176,14 @@ export function Storage() {
                 )}
 
                 <Text className="bg-[#ffa4a4] font-semibold text-[#ffffff] p-1 rounded-lg text-[20px]">
-                  Total : {moneyFormat(storage.additionalPrice)}
+                  Total : {moneyFormat(Sales.additionalPrice)}
                 </Text>
               </View>
             </View>
           ))}
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate("createstorage")}
+          onPress={() => navigation.navigate("createsales")}
           className=" h-14 absolute z-30 top-[100%]  right-5 "
         >
           <AntDesign name="pluscircle" size={50} color="#6fbd89" />

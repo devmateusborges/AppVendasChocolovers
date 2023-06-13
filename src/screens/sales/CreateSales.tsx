@@ -14,10 +14,10 @@ import { TypeClient, TypeProducts } from "../../@types/types";
 import { GetClient } from "../../service/Client";
 import { useFocusEffect } from "@react-navigation/native";
 import { GetProduct } from "../../service/Products";
-import { CreateStorageDB } from "../../service/Storage";
-import { moneyFormat } from "../../utils/FuncUtils";
+import { CreateSalesDB } from "../../service/Sales";
+import { dateFormat, moneyFormat } from "../../utils/FuncUtils";
 
-export function CreateStorage() {
+export function CreateSales() {
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
   const [openDateDelivery, setOpenDateDelivery] = useState(false);
@@ -42,7 +42,7 @@ export function CreateStorage() {
     await response.map((client: TypeClient) => {
       return dataDropdownClient.push({
         key: client.id,
-        value: client.firstName,
+        value: client.firstName + " " + client.surName,
       });
     });
   };
@@ -71,7 +71,7 @@ export function CreateStorage() {
     paymentDate: Date,
     additionalPrice: number
   ) => {
-    await CreateStorageDB(
+    await CreateSalesDB(
       clientID,
       productID,
       amount,
@@ -87,7 +87,7 @@ export function CreateStorage() {
       <View className="bg-[#d1637b] absolute w-full h-[70vh] rounded-bl-[60vh]"></View>
 
       <View className="w-full h-[100vh] flex flex-col p-2  absolute z-10  items-center">
-        <AppMenu text="Novo Pedido" routerBack="storages" />
+        <AppMenu text="Novo Pedido" routerBack="sales" />
 
         <View className="w-full flex flex-col bg-white h-full mt-10 rounded-xl p-2 item-center ">
           <View className="w-[100%] h-[85%] flex flex-col items-center  p-2">
@@ -98,7 +98,7 @@ export function CreateStorage() {
                   boxStyles={{
                     borderColor: "#fff",
                     backgroundColor: "#dddddd",
-                    height: 70,
+                    height: 57,
                     alignItems: "center",
                   }}
                   setSelected={(val: React.SetStateAction<string>) => {
@@ -116,7 +116,7 @@ export function CreateStorage() {
                 boxStyles={{
                   borderColor: "#fff",
                   backgroundColor: "#dddddd",
-                  height: 70,
+                  height: 57,
                   alignItems: "center",
                 }}
                 setSelected={(val: React.SetStateAction<string>) =>
@@ -156,7 +156,7 @@ export function CreateStorage() {
                 onPress={() => setOpenDateDelivery(true)}
                 className="bg-[#d1637b] w-[100%]  "
                 icon={<Entypo name="back-in-time" size={24} color="#ffffff" />}
-                text="Data de entrega"
+                text={dateFormat(String(deliveryDate))}
               />
               <Text className="mt-4 text-[#969595] font-bold">
                 Data de Pagamento
@@ -181,7 +181,7 @@ export function CreateStorage() {
                 onPress={() => setOpenDatePayment(true)}
                 className="bg-[#d1637b] w-[100%]  "
                 icon={<Entypo name="back-in-time" size={24} color="#ffffff" />}
-                text="Data Pagamento"
+                text={dateFormat(String(paymentDate))}
               />
               <DatePicker
                 theme="light"

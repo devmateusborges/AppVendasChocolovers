@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "879037124979",
+    "firebase_url": "https://appcotrollersales-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "appcotrollersales",
+    "storage_bucket": "appcotrollersales.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879037124979:android:5ae5b0ec5b7ee931a13506",
+        "android_client_info": {
+          "package_name": "com.mateus.borges2.appSales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879037124979-bmsdsoa5je7svecjpa3845i45rort8lm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChuxRhLDZD4e1rLyLI4Yea1APnL1jN4-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879037124979-bmsdsoa5je7svecjpa3845i45rort8lm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

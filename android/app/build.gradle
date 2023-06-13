@@ -1,5 +1,7 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
+
 
 import com.android.build.OutputFile
 
@@ -113,9 +115,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.mateus.borges2.Appvendas'
+    namespace 'com.mateus.borges2.appSales'
     defaultConfig {
-        applicationId 'com.mateus.borges2.Appvendas'
+        applicationId 'com.mateus.borges2.appSales'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
